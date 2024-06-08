@@ -28,7 +28,17 @@ export async function GetProfile(surveyId: string, profileId: string): Promise<P
  * @returns The added profile, with the updated ID, or undefined if there was an error.
  */
 export async function AddProfile(surveyId: string, profile: Profile): Promise<Profile | undefined> {
-    return await Post(`survey/${surveyId}/profile`, profile);
+    const newProfile = await Post(`survey/${surveyId}/profile`, profile);
+
+    if(newProfile) {
+        const profiles = GetVariable(StorageVariable.PROFILES);
+        if(profiles) {
+            profiles.push(newProfile);
+            SetVariable(StorageVariable.PROFILES, profiles);
+        }
+    }
+
+    return newProfile;
 }
 
 /**
@@ -38,7 +48,15 @@ export async function AddProfile(surveyId: string, profile: Profile): Promise<Pr
  * @param profile The ID field will be ignored
  */
 export async function UpdateProfile(surveyId: string, profileId: string, profile: Profile) {
-    return await Put(`survey/${surveyId}/profile/${profileId}`, profile);
+    const result = await Put(`survey/${surveyId}/profile/${profileId}`, profile);
+ 
+    const profiles = GetVariable(StorageVariable.PROFILES);
+    if(profiles) {
+        const updatedProfiles = profiles.map(x => x.ID === profileId? profile : x);
+        SetVariable(StorageVariable.PROFILES, updatedProfiles);
+    }
+
+    return result;
 }
 
 /**

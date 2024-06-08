@@ -66,7 +66,10 @@ export function ProfileList(props: ProfileListProps) {
     profiles.sort((a, b) => a.Title.localeCompare(b.Title));
 
     return <>
-        <a href={`/edit/${surveyId}/profile/new`} className="no-style-link-white"><button className="btn btn-secondary mb-3">Añadir</button></a>
+        <a href={`/edit/${surveyId}/profile/new`} className="no-style-link-white">
+            <Button variant="secondary" className="mb-3">Añadir</Button>
+        </a>
+
         <ul className="survey-list">
             {profiles.map((profile) =>
                 <ProfileListElement key={profile.ID} Profile={profile}></ProfileListElement>

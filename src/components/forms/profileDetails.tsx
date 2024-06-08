@@ -1,11 +1,11 @@
 import { Profile } from "../../models/Profile";
 import { AddProfile, DeleteProfile, UpdateProfile } from "../../repositories/profilesRepo";
-import { useState } from "react";
+import React, { useState } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
 import { Floppy2 } from "react-bootstrap-icons";
+import { useParams } from "react-router-dom";
 
 interface ProfileDetailsFormProps {
-    SurveyID: string,
     Profile: Profile
 }
 
@@ -18,45 +18,70 @@ interface ProfileDetailsFormProps {
  * @returns 
  */
 export function ProfileDetailsForm(props: ProfileDetailsFormProps) {
+    const params = useParams();
+    const surveyId = params.surveyId!;
+
     const profile: Profile = props.Profile;
 
+    const [title, setTitle] = useState(profile.Title);
+    const [description, setDescription] = useState(profile.Description);
     const [show, setShow] = useState(false);
 
-    async function onSubmit(data: FormData) {
+    async function onSubmit(e: React.FormEvent) {
+        e.preventDefault();
+
         const newProfile: Profile = {
-            Title: data.get("title")!.toString(),
-            Description: data.get("description")!.toString()
+            Title: title,
+            Description: description
         };
 
         if(profile.ID) {
             //Has ID, so we want to update
-            await UpdateProfile(props.SurveyID, profile.ID, newProfile);
+            await UpdateProfile(surveyId, profile.ID, newProfile);
         } else {
             //Doesn't have id, we want to create a new one
-            await AddProfile(props.SurveyID, newProfile);
+            await AddProfile(surveyId, newProfile);
         }
 
-        window.location.href = `/edit/${props.SurveyID}/profile`;
+        window.location.href = `/${surveyId}/profile`;
     }
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
     const confirmDelete = async () => {
-        await DeleteProfile(props.SurveyID, props.Profile.ID!);
+        await DeleteProfile(surveyId, props.Profile.ID!);
 
-        window.location.href = `/edit/${props.SurveyID}/profile`;
+        window.location.href = `/${surveyId}/profile`;
     };
 
-    return <Form>
+    return <Form onSubmit={onSubmit}>
         <Form.Group className="mb-3">
             <Form.Label htmlFor="title">Nombre del perfil:</Form.Label>
-            <Form.Control id="title" name="title" style={{width: "40%"}} required type="text" defaultValue={profile.Title} placeholder="Nombre del perfil"></Form.Control>
+            <Form.Control
+                id="title"
+                name="title"
+                style={{width: "40%"}}
+                required
+                type="text"
+                defaultValue={title}
+                placeholder="Nombre del perfil"
+                onChange={(e) => setTitle(e.target.value)}
+            />
         </Form.Group>
 
         <Form.Group className="mb-3">
             <Form.Label htmlFor="description">Descripción privada:</Form.Label>
-            <Form.Control id="description" name="description" as="textarea" rows={4} style={{resize: "none"}} defaultValue={profile.Description} placeholder="Esta descripción no se mostrará al encuestado, solo es visible dentro de la aplicación"></Form.Control>
+            <Form.Control
+                id="description"
+                name="description"
+                as="textarea"
+                rows={4}
+                style={{resize: "none"}}
+                defaultValue={description}
+                placeholder="Esta descripción no se mostrará al encuestado, solo es visible dentro de la aplicación"
+                onChange={(e) => setDescription(e.target.value)}
+            />
         </Form.Group>
 
         <Button variant="secondary" type="submit">

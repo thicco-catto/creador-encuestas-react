@@ -1,0 +1,37 @@
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { EditPageTemplate } from "../../../../components/editPageTemplate";
+import { ProfileDetailsForm } from "../../../../components/forms/profileDetails";
+import { PageLayout } from "../../../../components/pageLayout";
+import { Profile } from "../../../../models/Profile";
+import { GetVariable, StorageVariable } from "../../../../utils/localStorage";
+
+function ProfileListPage() {
+    const params = useParams();
+    const profileId = params.profileId!;
+
+    const [profile, setProfile] = useState<Profile | null>(null);
+
+    useEffect(() => {
+        const profilesData = GetVariable(StorageVariable.PROFILES);
+
+        if(profilesData) {
+            const foundProfile = profilesData.find(x => x.ID === profileId);
+            setProfile(foundProfile ?? null);
+        }
+    }, [profile, profileId]);
+
+    if(!profile) {
+        return <></>;
+    }
+
+    return (
+        <PageLayout SelectedProfile={params.profileId}>
+            <EditPageTemplate Title="Información Perfil">
+                <ProfileDetailsForm Profile={profile}></ProfileDetailsForm>
+            </EditPageTemplate>
+    </PageLayout>
+    );
+}
+
+export default ProfileListPage;
