@@ -1,12 +1,12 @@
+import { useParams } from "react-router-dom";
 import { Question } from "../../models/Question";
 import { AddQuestion, DeleteQuestion, UpdateQuestion } from "../../repositories/questionRepo";
 import { GetAllVersions, UpdateVersion } from "../../repositories/versionRepo";
-import { useState } from "react";
+import React, { useState } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
 import { Floppy2 } from "react-bootstrap-icons";
 
 interface QuestionDetailsFormProps {
-    SurveyID: string,
     QuestionID?: string,
     Question: Question
 }
@@ -19,8 +19,14 @@ interface QuestionDetailsFormProps {
  * @param props 
  */
 export function QuestionForm(props: QuestionDetailsFormProps) {
+    const params = useParams();
+    const surveyId = params.surveyId!;
+
     const question: Question = props.Question;
-    const defaultVersion = question.DefaultDetails;
+
+    const [title, setTitle] = useState(question.InternalTitle);
+    const [questionType, setQuestionType] = useState(question.QuestionType.toString());
+    const [numAnswers, setNumAnswers] = useState(question.DefaultDetails.Answers.length);
 
     const [buttonClicked, setButtonClicked] = useState("None");
 
@@ -36,51 +42,53 @@ export function QuestionForm(props: QuestionDetailsFormProps) {
         }
     }
 
-    async function onSubmit(data: FormData) {
+    async function onSubmit(e: React.FormEvent) {
+        e.preventDefault();
+
         const newQuestion: Question = {
             HasVersions: question.HasVersions,
-            InternalTitle: data.get("title")!.toString(),
-            QuestionType: parseInt(data.get("questionType")!.toString()),
+            InternalTitle: title,
+            QuestionType: parseInt(questionType),
             DefaultDetails: question.DefaultDetails
         };
-        const numAnswers = parseInt(data.get("numAnswers")!.toString());
+        const newNumAnswers = numAnswers;
 
         let newId: string = question.ID!;
 
         if (question.ID) {
             // Updating existing question
-            AdjustAnswersLength(newQuestion.DefaultDetails.Answers, numAnswers);
+            AdjustAnswersLength(newQuestion.DefaultDetails.Answers, newNumAnswers);
 
-            const versions = await GetAllVersions(props.SurveyID, question.ID);
+            const versions = await GetAllVersions(surveyId, question.ID);
             if(versions) {
                 for (let i = 0; i < versions.length; i++) {
                     const version = versions[i];
                     
-                    AdjustAnswersLength(version.Details.Answers, numAnswers);
+                    AdjustAnswersLength(version.Details.Answers, newNumAnswers);
 
-                    await UpdateVersion(props.SurveyID, question.ID, version.ID!, version);
+                    await UpdateVersion(surveyId, question.ID, version.ID!, version);
                 }
             }
 
-            await UpdateQuestion(props.SurveyID, question.ID, newQuestion);
+            await UpdateQuestion(surveyId, question.ID, newQuestion);
         } else {
             // Creating new question
             const newAnswers: string[] = [];
 
-            for (let i = 0; i < numAnswers; i++) {
+            for (let i = 0; i < newNumAnswers; i++) {
                 newAnswers.push(`Respuesta ${i + 1}`);
             }
 
             newQuestion.DefaultDetails.Answers = newAnswers;
 
-            const added = await AddQuestion(props.SurveyID, newQuestion);
+            const added = await AddQuestion(surveyId, newQuestion);
             newId = added.ID!;
         }
 
-        if (buttonClicked == "ToVersions") {
-            window.location.href = `/edit/${props.SurveyID}/question/${newId}/version`;
+        if (buttonClicked === "ToVersions") {
+            window.location.href = `/${surveyId}/question/${newId}/version`;
         } else {
-            window.location.href = `/edit/${props.SurveyID}/question/${newId}/version/default`;
+            window.location.href = `/${surveyId}/question/${newId}/version/default`;
         }
     }
 
@@ -90,20 +98,35 @@ export function QuestionForm(props: QuestionDetailsFormProps) {
     const handleShow = () => setShow(true);
 
     const confirmDelete = async () => {
-        await DeleteQuestion(props.SurveyID, props.QuestionID!);
+        await DeleteQuestion(surveyId, props.QuestionID!);
 
-        window.location.href = `/edit/${props.SurveyID}`;
+        window.location.href = `/${surveyId}/question`;
     };
 
-    return <Form>
+    return <Form onSubmit={onSubmit}>
         <Form.Group className="mb-3">
             <Form.Label htmlFor="title">Título interno:</Form.Label>
-            <Form.Control id="title" name="title" style={{ width: "40%" }} required type="text" defaultValue={question.InternalTitle} placeholder="Este titulo solo se muestra en la aplicacion"></Form.Control>
+            <Form.Control
+                id="title"
+                name="title"
+                style={{ width: "40%" }}
+                required
+                type="text"
+                defaultValue={title}
+                placeholder="Este titulo solo se muestra en la aplicacion"
+                onChange={e => setTitle(e.target.value)}
+            />
         </Form.Group>
 
         <Form.Group className="mb-3">
             <Form.Label htmlFor="questionType">Tipo de pregunta:</Form.Label>
-            <Form.Select id="questionType" name="questionType" style={{ width: "40%" }} defaultValue={question.QuestionType.toString()}>
+            <Form.Select
+                id="questionType"
+                name="questionType"
+                style={{ width: "40%" }}
+                defaultValue={questionType}
+                onChange={e => setQuestionType(e.target.value)}
+            >
                 <option value="1">Elección Única</option>
                 <option value="2">Elección Múltiple</option>
                 <option value="3">Texto Libre</option>
@@ -114,7 +137,15 @@ export function QuestionForm(props: QuestionDetailsFormProps) {
 
         <Form.Group className="mb-3">
             <Form.Label htmlFor="numAnswers">Número de respuestas:</Form.Label>
-            <Form.Control id="numAnswers" name="numAnswers" style={{ width: "40%" }} required type="number" defaultValue={defaultVersion.Answers.length}></Form.Control>
+            <Form.Control
+                id="numAnswers"
+                name="numAnswers"
+                style={{ width: "40%" }}
+                required
+                type="number"
+                defaultValue={numAnswers}
+                onChange={e => setNumAnswers(parseInt(e.target.value))}
+            />
         </Form.Group>
 
         <Button onClick={() => setButtonClicked("ToAnswers")} variant="secondary" className="me-3" type="submit">

@@ -6,6 +6,7 @@ import ProfileListPage from "./app/[surveyId]/profile/profileList";
 import NewProfile from "./app/[surveyId]/profile/newProfile";
 import EditProfile from "./app/[surveyId]/profile/[profileId]/editProfile";
 import QuestionListPage from "./app/[surveyId]/question/questionList";
+import EditQuestion from "./app/[surveyId]/question/[questionId]/editQuestion";
 
 const browserRouter = createBrowserRouter([
     {
@@ -42,6 +43,10 @@ const browserRouter = createBrowserRouter([
         path: "/:surveyId/question",
         Component: QuestionListPage
     },
+    {
+        path: "/:surveyId/question/:questionId",
+        Component: EditQuestion
+    }
 ]);
 
 export default browserRouter;
