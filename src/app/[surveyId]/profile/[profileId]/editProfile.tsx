@@ -6,7 +6,7 @@ import { PageLayout } from "../../../../components/pageLayout";
 import { Profile } from "../../../../models/Profile";
 import { GetVariable, StorageVariable } from "../../../../utils/localStorage";
 
-function ProfileListPage() {
+function EditProfile() {
     const params = useParams();
     const profileId = params.profileId!;
 
@@ -34,4 +34,4 @@ function ProfileListPage() {
     );
 }
 
-export default ProfileListPage;
+export default EditProfile;

@@ -3,7 +3,7 @@ import { ProfileDetailsForm } from "../../../components/forms/profileDetails";
 import { PageLayout } from "../../../components/pageLayout";
 import { Profile } from "../../../models/Profile";
 
-function ProfileListPage() {
+function NewProfile() {
     const profile: Profile = {
         Title: "",
         Description: ""
@@ -18,4 +18,4 @@ function ProfileListPage() {
     );
 }
 
-export default ProfileListPage;
+export default NewProfile;
