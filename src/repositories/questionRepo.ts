@@ -1,4 +1,5 @@
 import { Question } from "../models/Question";
+import { GetVariable, SetVariable, StorageVariable } from "../utils/localStorage";
 import { Delete, Get, Post, Put } from "./dbContext";
 
 /**
@@ -47,5 +48,17 @@ export async function UpdateQuestion(surveyId: string, questionId: string, quest
  * @returns 
  */
 export async function DeleteQuestion(surveyId: string, questionId: string) {
-    return await Delete(`survey/${surveyId}/question/${questionId}`);
+    const result = await Delete(`survey/${surveyId}/question/${questionId}`);
+
+    const survey = GetVariable(StorageVariable.SURVEY_INFO);
+    const questions = GetVariable(StorageVariable.QUESTIONS);
+    if(survey && questions) {
+        survey.QuestionOrder = survey.QuestionOrder.filter(x => x !== questionId);
+        SetVariable(StorageVariable.SURVEY_INFO, survey);
+
+        const filteredQuestions = questions.filter(x => x.ID !== questionId);
+        SetVariable(StorageVariable.QUESTIONS, filteredQuestions);
+    }
+
+    return result;
 }

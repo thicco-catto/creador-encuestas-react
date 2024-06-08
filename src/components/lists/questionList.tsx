@@ -1,14 +1,17 @@
+import { useParams } from "react-router-dom";
 import { GetQuestionTypeName, Question } from "../../models/Question";
 import { DeleteQuestion } from "../../repositories/questionRepo";
 import { useState } from "react";
 import { Button, Modal } from "react-bootstrap";
 
 interface QuestionListElementProps {
-    SurveyId: string,
     Question: Question
 }
 
 function QuestionListElement(props: QuestionListElementProps) {
+    const params = useParams();
+    const surveyId = params["surveyId"]!;
+
     const question = props.Question;
 
     const [show, setShow] = useState(false);
@@ -17,20 +20,19 @@ function QuestionListElement(props: QuestionListElementProps) {
     const handleShow = () => setShow(true);
 
     const confirmDelete = async () => {
-        await DeleteQuestion(props.SurveyId, props.Question.ID!);
+        await DeleteQuestion(surveyId, props.Question.ID!);
         handleClose();
 
-        // TODO: Find alternative
-        // router.refresh();
+        window.location.reload();
     };
 
     return <li className="survey-list-element">
         <h2>{question.InternalTitle}</h2>
         <p><strong>Tipo:</strong> Pregunta de {GetQuestionTypeName(question.QuestionType)}</p>
         <br></br>
-        <a href={`/edit/${props.SurveyId}/question/${question.ID}`} className="me-2"><Button variant="secondary">Editar Detalles</Button></a>
-        <a href={`/edit/${props.SurveyId}/question/${question.ID}/version/default`} className="me-2"><Button variant="secondary">Editar Respuestas</Button></a>
-        <a href={`/edit/${props.SurveyId}/question/${question.ID}/version`}><Button variant="secondary">Versiones</Button></a>
+        <a href={`/${surveyId}/question/${question.ID}`} className="me-2"><Button variant="secondary">Editar Detalles</Button></a>
+        <a href={`/${surveyId}/question/${question.ID}/version/default`} className="me-2"><Button variant="secondary">Editar Respuestas</Button></a>
+        <a href={`/${surveyId}/question/${question.ID}/version`}><Button variant="secondary">Versiones</Button></a>
         <Button onClick={handleShow} variant="danger" style={{ float: "right" }}>Eliminar</Button>
 
         <Modal show={show} onHide={handleClose}>
@@ -51,7 +53,6 @@ function QuestionListElement(props: QuestionListElementProps) {
 }
 
 interface QuestionListProps {
-    SurveyID: string,
     Questions: Question[],
     QuestionOrder: string[]
 }
@@ -61,12 +62,16 @@ interface QuestionListProps {
  * @param props 
  */
 export function QuestionList(props: QuestionListProps) {
+    const params = useParams();
+    const surveyId = params["surveyId"]!;
+
     const questions = props.Questions;
+
     return <>
-        <a href={`/edit/${props.SurveyID}/question/new`} style={{ textDecoration: "none", color: "white" }}><button className="btn btn-secondary mb-3">Añadir</button></a>
+        <a href={`/${surveyId}/question/new`} style={{ textDecoration: "none", color: "white" }}><button className="btn btn-secondary mb-3">Añadir</button></a>
         <ul className="survey-list">
             {props.QuestionOrder.map((id) =>
-                <QuestionListElement key={id} SurveyId={props.SurveyID} Question={questions.find(x => x.ID === id)!}></QuestionListElement>
+                <QuestionListElement key={id} Question={questions.find(x => x.ID === id)!}></QuestionListElement>
             )}
         </ul>
     </>;
