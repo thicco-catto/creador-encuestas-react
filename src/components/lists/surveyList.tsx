@@ -2,6 +2,7 @@ import { Survey } from "../../models/Survey";
 import { DeleteSurvey } from "../../repositories/surveyRepo";
 import { useState } from "react";
 import { Button, Modal } from "react-bootstrap";
+import { SetVariable, StorageVariable } from "../../utils/localStorage";
 
 interface SurveyListElementProps {
     Survey: Survey
@@ -15,7 +16,13 @@ function SurveyListElement(props: SurveyListElementProps) {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
-    const confirmDelete = async () => {
+    function onClickEdit() {
+        SetVariable(StorageVariable.SURVEY_INFO, survey);
+
+        window.location.href = `/${survey.ID}/loading`;
+    }
+
+    async function confirmDelete() {
         await DeleteSurvey(survey.ID);
         handleClose();
 
@@ -28,7 +35,7 @@ function SurveyListElement(props: SurveyListElementProps) {
         <p>{survey.PrivateDescription}</p>
 
         <Button variant="secondary" style={{marginRight: "10px"}}>Compartir</Button>
-        <a href={`/edit/${survey.ID}`}><Button variant="secondary">Editar</Button></a>
+        <Button onClick={onClickEdit} variant="secondary">Editar</Button>
         <Button onClick={handleShow} variant="danger" style={{float: "right"}}>Eliminar</Button>
 
         <Modal show={show} onHide={handleClose}>
