@@ -60,6 +60,11 @@ label {
   color: black
 }
 
+.no-style-link-white {
+  text-decoration: none;
+  color: white
+}
+
 .question-sidebar-element {
   margin-top: 10px;
   margin-bottom: 10px;

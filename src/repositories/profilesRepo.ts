@@ -1,4 +1,5 @@
 import { Profile } from "../models/Profile";
+import { GetVariable, SetVariable, StorageVariable } from "../utils/localStorage";
 import { Delete, Get, Post, Put } from "./dbContext";
 
 /**
@@ -47,5 +48,15 @@ export async function UpdateProfile(surveyId: string, profileId: string, profile
  * @returns 
  */
 export async function DeleteProfile(surveyId: string, profileId: string) {
-    return await Delete(`survey/${surveyId}/profile/${profileId}`);
+    const result = await Delete(`survey/${surveyId}/profile/${profileId}`);
+
+    const profiles = GetVariable(StorageVariable.PROFILES);
+    if(profiles) {
+        const filteredProfiles = profiles.filter(x => x.ID !== profileId);
+        SetVariable(StorageVariable.PROFILES, filteredProfiles);
+
+        // TODO: Remove the profile from related versions
+    }
+
+    return result;
 }

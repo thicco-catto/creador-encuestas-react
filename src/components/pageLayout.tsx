@@ -4,20 +4,42 @@ import { QuestionsSidebar } from "./navigation/questionSidebar";
 import { Profile } from "../models/Profile";
 import { Question } from "../models/Question";
 import { Survey } from "../models/Survey";
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { GetVariable, StorageVariable } from "../utils/localStorage";
 
 interface PageLayoutProps {
-    Survey: Survey,
-    Profiles: Profile[]
-    Questions: Question[],
     QuestionId?: string,
     SelectedProfile?: string,
     AffectedProfiles?: string[],
 }
 
 export function PageLayout(props: React.PropsWithChildren<PageLayoutProps>) {
-    const survey = props.Survey;
-    const profiles = props.Profiles;
-    const questions = props.Questions;
+    const params = useParams();
+    const surveyId = params.surveyId!;
+
+    const [survey, setSurvey] = useState<Survey | null>(null);
+    const [questions, setQuestions] = useState<Question[] | null>(null);
+    const [profiles, setProfiles] = useState<Profile[] | null>(null);
+
+    useEffect(() => {
+        const surveyData = GetVariable(StorageVariable.SURVEY_INFO);
+        const questionsData = GetVariable(StorageVariable.QUESTIONS);
+        const profilesData = GetVariable(StorageVariable.PROFILES);
+
+        if(!survey || !questions || !profiles || survey.ID !== surveyId) {
+            window.location.href = `/${surveyId}/loading`;
+        } else {
+            setSurvey(surveyData);
+            setQuestions(questionsData);
+            setProfiles(profilesData);
+        }
+    }, [survey, questions, profiles, surveyId]);
+
+    if(!survey || !questions || !profiles) {
+        return <></>;
+    }
+
     const questionId = props.QuestionId;
     const selectedProfile = props.SelectedProfile;
 

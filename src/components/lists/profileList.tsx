@@ -1,14 +1,17 @@
+import { useParams } from "react-router-dom";
 import { Profile } from "../../models/Profile";
 import { DeleteProfile } from "../../repositories/profilesRepo";
 import { useState } from "react";
 import { Button, Modal } from "react-bootstrap";
 
 interface ProfileListElementProps {
-    SurveyId: string,
     Profile: Profile
 }
 
 function ProfileListElement(props: ProfileListElementProps) {
+    const params = useParams();
+    const surveyId = params["surveyId"]!;
+
     const profile = props.Profile;
 
     const [show, setShow] = useState(false);
@@ -17,18 +20,17 @@ function ProfileListElement(props: ProfileListElementProps) {
     const handleShow = () => setShow(true);
 
     const confirmDelete = async () => {
-        await DeleteProfile(props.SurveyId, props.Profile.ID!);
+        await DeleteProfile(surveyId, props.Profile.ID!);
         handleClose();
 
-        // TODO: Find alternative
-        // router.refresh();
+        window.location.reload();
     };
 
     return <li className="survey-list-element">
         <h2>{profile.Title}</h2>
         <p>{profile.Description}</p>
         <br></br>
-        <a href={`/edit/${props.SurveyId}/profile/${profile.ID}`}><Button variant="secondary">Editar</Button></a>
+        <a href={`/edit/${surveyId}/profile/${profile.ID}`}><Button variant="secondary">Editar</Button></a>
         <Button onClick={handleShow} variant="danger" style={{ float: "right" }}>Eliminar</Button>
 
         <Modal show={show} onHide={handleClose}>
@@ -49,7 +51,6 @@ function ProfileListElement(props: ProfileListElementProps) {
 }
 
 interface ProfileListProps {
-    SurveyID: string,
     Profiles: Profile[]
 }
 
@@ -58,13 +59,17 @@ interface ProfileListProps {
  * @param props
  */
 export function ProfileList(props: ProfileListProps) {
+    const params = useParams();
+    const surveyId = params["surveyId"]!;
+
     const profiles = props.Profiles;
     profiles.sort((a, b) => a.Title.localeCompare(b.Title));
+
     return <>
-        <a href={`/edit/${props.SurveyID}/profile/new`} style={{ textDecoration: "none", color: "white" }}><button className="btn btn-secondary mb-3">Añadir</button></a>
+        <a href={`/edit/${surveyId}/profile/new`} className="no-style-link-white"><button className="btn btn-secondary mb-3">Añadir</button></a>
         <ul className="survey-list">
             {profiles.map((profile) =>
-                <ProfileListElement key={profile.ID} SurveyId={props.SurveyID} Profile={profile}></ProfileListElement>
+                <ProfileListElement key={profile.ID} Profile={profile}></ProfileListElement>
             )}
         </ul>
     </>;

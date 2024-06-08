@@ -1,43 +1,33 @@
-import { useParams } from "react-router-dom";
 import { GetVariable, StorageVariable } from "../../utils/localStorage";
 import { EditPageTemplate } from "../../components/editPageTemplate";
 import { SurveyDetailsForm } from "../../components/forms/surveyDetails";
 import { PageLayout } from "../../components/pageLayout";
 import { Survey } from "../../models/Survey";
 import { Question } from "../../models/Question";
-import { Profile } from "../../models/Profile";
 import { useEffect, useState } from "react";
 
 function EditSurvey() {
-    const params = useParams();
-    const surveyId = params.surveyId!;
-
     const [survey, setSurvey] = useState<Survey | null>(null);
-    const [questions, setQuestions] = useState<Question[] | null>(null);
-    const [profiles, setProfiles] = useState<Profile[] | null>(null);
+    const [firstQuestion, setFirstQuestion] = useState<Question | null>(null);
 
     useEffect(() => {
         const surveyData = GetVariable(StorageVariable.SURVEY_INFO);
         const questionsData = GetVariable(StorageVariable.QUESTIONS);
-        const profilesData = GetVariable(StorageVariable.PROFILES);
 
-        if(!survey || !questions || !profiles || survey.ID !== surveyId) {
-            window.location.href = `/${surveyId}/loading`;
-        } else {
+        if(surveyData && questionsData) {
             setSurvey(surveyData);
-            setQuestions(questionsData);
-            setProfiles(profilesData);
+            setFirstQuestion(questionsData[0]);
         }
-    }, [survey, questions, profiles, surveyId]);
+    }, [survey, firstQuestion]);
 
-    if(!survey || !questions || !profiles) {
+    if(!survey || !firstQuestion) {
         return <></>;
     }
 
     return (
-        <PageLayout Survey={survey} Questions={questions} Profiles={profiles}>
+        <PageLayout>
             <EditPageTemplate Title="Información Encuesta">
-                <SurveyDetailsForm Survey={survey} FirstQuestionID={questions[0].ID!}></SurveyDetailsForm>
+                <SurveyDetailsForm Survey={survey} FirstQuestionID={firstQuestion.ID!}></SurveyDetailsForm>
             </EditPageTemplate>
         </PageLayout>
     );
