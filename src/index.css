@@ -1,13 +1,68 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/* @tailwind base;
+@tailwind components;
+@tailwind utilities; */
+
+main {
+  padding: 3em;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+html {
+  height: 100%;
+}
+body {
+  height: 100%;
+}
+
+ul.navbar-container {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+}
+
+li.navbar-button {
+  float: right;
+  border-left: 2px solid white;
+}
+
+li.navbar-button a.navbar-link {
+display: block;
+text-align: center;
+padding: 14px 16px;
+text-decoration: none;
+}
+
+li.navbar-button a.navbar-link:hover {
+background-color: #111;
+}
+
+ul.survey-list {
+  list-style-type: none;
+}
+
+.survey-list-element {
+  background-color: gainsboro;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+label {
+  font-size: larger;
+}
+
+.icon-btn {
+  padding: 6px;
+}
+
+.no-style-link {
+  text-decoration: none;
+  color: black
+}
+
+.question-sidebar-element {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border: solid 2px #888888;
+  padding: 3px
 }
