@@ -30,7 +30,7 @@ function ProfileListElement(props: ProfileListElementProps) {
         <h2>{profile.Title}</h2>
         <p>{profile.Description}</p>
         <br></br>
-        <a href={`/edit/${surveyId}/profile/${profile.ID}`}><Button variant="secondary">Editar</Button></a>
+        <a href={`/${surveyId}/profile/${profile.ID}`}><Button variant="secondary">Editar</Button></a>
         <Button onClick={handleShow} variant="danger" style={{ float: "right" }}>Eliminar</Button>
 
         <Modal show={show} onHide={handleClose}>
@@ -66,7 +66,7 @@ export function ProfileList(props: ProfileListProps) {
     profiles.sort((a, b) => a.Title.localeCompare(b.Title));
 
     return <>
-        <a href={`/edit/${surveyId}/profile/new`} className="no-style-link-white">
+        <a href={`/${surveyId}/profile/new`} className="no-style-link-white">
             <Button variant="secondary" className="mb-3">Añadir</Button>
         </a>
 
