@@ -1,6 +1,6 @@
 import { Survey } from "../../models/Survey";
 import { UpdateSurvey } from "../../repositories/surveyRepo";
-import { useState } from "react";
+import React, { useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { Floppy2 } from "react-bootstrap-icons";
 
@@ -17,15 +17,21 @@ interface SurveyDetailsFormProps {
 export function SurveyDetailsForm(props: SurveyDetailsFormProps) {
     const survey: Survey = props.Survey;
 
+    const [title, setTitle] = useState(survey.Title);
+    const [publicDesc, setPublicDesc] = useState(survey.PublicDescription);
+    const [privateDesc, setPrivateDesc] = useState(survey.PrivateDescription);
     const [buttonClicked, setButtonClicked] = useState("None");
 
-    async function onSubmit(data: FormData) {
+    async function onSubmit(e: React.FormEvent) {
+        e.preventDefault();
+
         const newSurvey: Survey = {
             ID: survey.ID,
-            Title: data.get("title")!.toString(),
-            PublicDescription: data.get("publicDescription")!.toString(),
-            PrivateDescription: data.get("privateDescription")!.toString(),
-            QuestionOrder: survey.QuestionOrder
+            Title: title,
+            PublicDescription: publicDesc,
+            PrivateDescription: privateDesc,
+            QuestionOrder: survey.QuestionOrder,
+            LoadOrder: survey.LoadOrder
         };
 
         await UpdateSurvey(survey.ID, newSurvey);
@@ -37,20 +43,47 @@ export function SurveyDetailsForm(props: SurveyDetailsFormProps) {
         }
     }
 
-    return <Form>
+    return <Form onSubmit={onSubmit}>
         <Form.Group className="mb-3">
             <Form.Label htmlFor="title">Título de la encuesta:</Form.Label>
-            <Form.Control id="title" name="title" style={{width: "40%"}} required type="text" defaultValue={survey.Title} placeholder="Titulo de la encuesta"></Form.Control>
+            <Form.Control
+                id="title"
+                name="title"
+                style={{width: "40%"}}
+                required
+                type="text"
+                defaultValue={title}
+                placeholder="Titulo de la encuesta"
+                onChange={(e) => setTitle(e.target.value)}
+            />
         </Form.Group>
 
         <Form.Group className="mb-3">
             <Form.Label htmlFor="privateDescription">Descripción privada:</Form.Label>
-            <Form.Control id="privateDescription" name="privateDescription" as="textarea" rows={4} style={{resize: "none"}} defaultValue={survey.PrivateDescription} placeholder="Esta descripción no se mostrará al encuestado, solo es visible dentro de la aplicación"></Form.Control>
+            <Form.Control
+                id="privateDescription"
+                name="privateDescription"
+                as="textarea"
+                rows={4}
+                style={{resize: "none"}}
+                defaultValue={survey.PrivateDescription}
+                placeholder="Esta descripción no se mostrará al encuestado, solo es visible dentro de la aplicación"
+                onChange={(e) => setPrivateDesc(e.target.value)}
+            />
         </Form.Group>
 
         <Form.Group className="mb-3">
             <Form.Label htmlFor="publicDescription">Descripción publica:</Form.Label>
-            <Form.Control id="publicDescription" name="publicDescription" as="textarea" rows={4} style={{resize: "none"}} defaultValue={survey.PublicDescription} placeholder="Esta descripción se mostrará al encuestado antes de comenzar"></Form.Control>
+            <Form.Control
+                id="publicDescription"
+                name="publicDescription"
+                as="textarea"
+                rows={4}
+                style={{resize: "none"}}
+                defaultValue={survey.PublicDescription}
+                placeholder="Esta descripción se mostrará al encuestado antes de comenzar"
+                onChange={(e) => setPublicDesc(e.target.value)}
+            />
         </Form.Group>
 
         <Button onClick={() => setButtonClicked("Profiles")} variant="secondary" className="me-3" type="submit">

@@ -1,4 +1,5 @@
 import { Survey } from "../models/Survey";
+import { SetVariable, StorageVariable } from "../utils/localStorage";
 import { Delete, Get, Post, Put } from "./dbContext";
 
 const SurveyBackendPath = "survey";
@@ -26,7 +27,11 @@ export async function GetSurvey(id: string): Promise<Survey|undefined> {
  * @param survey The ID field is ignored.
  */
 export async function UpdateSurvey(id: string, survey: Survey) {
-    return await Put(`${SurveyBackendPath}/${id}`, survey);
+    const result = await Put(`${SurveyBackendPath}/${id}`, survey);
+
+    SetVariable(StorageVariable.SURVEY_INFO, survey);
+
+    return result;
 }
 
 /**
