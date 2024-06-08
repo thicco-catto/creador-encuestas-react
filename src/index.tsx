@@ -5,6 +5,7 @@ import './index.css';
 import { RouterProvider } from 'react-router-dom';
 import reportWebVitals from './reportWebVitals';
 import browserRouter from './router';
+import ErrorBoundary from './components/ErrorBoundary';
 
 
 
@@ -13,7 +14,9 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-      <RouterProvider router={browserRouter} />
+      <ErrorBoundary>
+        <RouterProvider router={browserRouter} />
+      </ErrorBoundary>
   </React.StrictMode>
 );
 

@@ -8,10 +8,17 @@ import { Spinner } from "react-bootstrap";
 function Home() {
     const [surveys, setSurveys] = useState<Survey[]>([]);
     const [loaded, setLoaded] = useState(false);
+    const [errorLoading, setErrorLoading] = useState(false);
 
     async function LoadSurveys() {
-        const fetchedSurveys = await GetAllSurveys()
-        setSurveys(fetchedSurveys);
+        const fetchedSurveys = await GetAllSurveys();
+
+        if (!fetchedSurveys) {
+            setErrorLoading(true);
+        } else {
+            setSurveys(fetchedSurveys);
+        }
+
         setLoaded(true);
     }
 
@@ -25,8 +32,15 @@ function Home() {
         <main>
             <h1>Mis Encuestas:</h1>
             {
-                loaded?
-                    <SurveyList Surveys={surveys}></SurveyList>
+                loaded ?
+                    <>
+                        {
+                            errorLoading ?
+                                <h2>Ha occurido un error al cargar el listado de encuestas. Vuelva a intentarlo más tarde.</h2>
+                                :
+                                <SurveyList Surveys={surveys}></SurveyList>
+                        }
+                    </>
                     :
                     <>
                         <h2>Cargando encuestas...</h2>

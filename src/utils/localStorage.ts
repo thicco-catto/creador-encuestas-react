@@ -15,7 +15,7 @@ type StorageVariableTypes = {
     [StorageVariable.SURVEY_INFO]: Survey;
     [StorageVariable.QUESTIONS]: Question[];
     [StorageVariable.PROFILES]: Profile[];
-    [StorageVariable.QUESTION_VERSIONS]: {[key: string]: QuestionVersion}
+    [StorageVariable.QUESTION_VERSIONS]: {[key: string]: QuestionVersion[]}
 };
 
 
