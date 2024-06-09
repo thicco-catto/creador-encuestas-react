@@ -106,9 +106,9 @@ export function QuestionEditorWithAnswers(props: QuestionEditorWithAnswersProps)
         MadeChanges(title, newAnswers);
     }
 
-    function FinishSaving() {
+    function FinishSaving(newAnswers: string[]) {
         setBaseTitle(title);
-        setBaseAnswers([...answers]);
+        setBaseAnswers([...newAnswers]);
         setMadeChanges(false);
         setSavingState(SavingChangesState.SAVED);
     }
@@ -131,7 +131,7 @@ export function QuestionEditorWithAnswers(props: QuestionEditorWithAnswersProps)
             await UpdateQuestion(surveyId, question.ID!, question);
         }
 
-        FinishSaving();
+        FinishSaving(answers);
     }
 
     function GetChangesMessage() {
@@ -217,7 +217,7 @@ export function QuestionEditorWithAnswers(props: QuestionEditorWithAnswersProps)
 
         setAnswers([...answers, answerText]);
 
-        FinishSaving();
+        FinishSaving([...answers, answerText]);
     }
 
     async function RemoveAnswer(index: number) {
@@ -282,11 +282,12 @@ export function QuestionEditorWithAnswers(props: QuestionEditorWithAnswersProps)
             }
         }
 
-        setAnswers(newAnswers);
-        FinishSaving();
+        setAnswers([...newAnswers]);
+        FinishSaving([...newAnswers]);
     }
 
     async function MoveAnswer(index: number, offset: number) {
+        console.log(index, offset)
         setSavingState(SavingChangesState.SAVING);
 
         const newIndex = index + offset;
@@ -362,10 +363,8 @@ export function QuestionEditorWithAnswers(props: QuestionEditorWithAnswersProps)
             }
         }
 
-        console.log("NEW", newAnswers);
         setAnswers([...newAnswers]);
-        setBaseAnswers([...newAnswers]);
-        FinishSaving();
+        FinishSaving([...newAnswers]);
     }
 
     return <>
@@ -390,29 +389,32 @@ export function QuestionEditorWithAnswers(props: QuestionEditorWithAnswersProps)
             </Row>
             {
                 answers.map((x, i) =>
-                    <Form.Group key={`${i}-form-group`}>
+                    <Form.Group key={baseAnswers[i]}>
                         {
                             hasDefault ?
-                                <Row key={`${i}-label-row`}><Form.Label key={`${i}-label`}>{defaultAnswers[i]}</Form.Label><br key={`${i}-br-label`}></br></Row> :
+                                <Row>
+                                    <Form.Label>{defaultAnswers[i]}</Form.Label>
+                                    <br></br>
+                                </Row> :
                                 <></>
                         }
-                        <Row className="mb-3" key={`${i}-input-row`}>
-                            <Col md="auto" key={`${i}-button-group-col`}>
-                                <ButtonGroup key={`${i}-button-group`}>
-                                    <Button onClick={() => MoveAnswer(i, -1)} key={`${i}-button-up`} variant="secondary" className="icon-btn" disabled={savingState === SavingChangesState.SAVING || i === 0}>
+                        <Row className="mb-3">
+                            <Col md="auto">
+                                <ButtonGroup>
+                                    <Button onClick={() => MoveAnswer(i, -1)} variant="secondary" className="icon-btn" disabled={savingState === SavingChangesState.SAVING || i === 0}>
                                         <ArrowUp size={20}></ArrowUp>
                                     </Button>
 
-                                    <Button onClick={() => MoveAnswer(i, 1)} key={`${i}-button-down`} variant="secondary" className="icon-btn" disabled={savingState === SavingChangesState.SAVING || i === answers.length-1}>
+                                    <Button onClick={() => MoveAnswer(i, 1)} variant="secondary" className="icon-btn" disabled={savingState === SavingChangesState.SAVING || i === answers.length-1}>
                                         <ArrowDown size={20}></ArrowDown>
                                     </Button>
                                 </ButtonGroup>
                             </Col>
-                            <Col key={`${i}-input-col`}>
-                                <Form.Control onChange={e => ChangeAnswer(e, i)} key={`${i}-input`} required type="text" defaultValue={x} disabled={savingState === SavingChangesState.SAVING}></Form.Control>
+                            <Col>
+                                <Form.Control onChange={e => ChangeAnswer(e, i)} required type="text" defaultValue={x} disabled={savingState === SavingChangesState.SAVING}></Form.Control>
                             </Col>
-                            <Col md="auto" key={`${i}-del-btn-col`}>
-                                <Button onClick={handleShow} key={`${i}-button`} variant="secondary" className="icon-btn" disabled={savingState === SavingChangesState.SAVING || answers.length <= 1}>
+                            <Col md="auto">
+                                <Button onClick={handleShow} variant="secondary" className="icon-btn" disabled={savingState === SavingChangesState.SAVING || answers.length <= 1}>
                                     <Trash size={30}></Trash>
                                 </Button>
 
