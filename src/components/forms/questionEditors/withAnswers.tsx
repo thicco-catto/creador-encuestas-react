@@ -1,22 +1,21 @@
-import { Profile } from "../../../models/Profile";
+import { useParams } from "react-router-dom";
 import { Question } from "../../../models/Question";
 import { QuestionDetails } from "../../../models/QuestionDetails";
 import { QuestionVersion } from "../../../models/QuestionVersion";
 import { UpdateQuestion } from "../../../repositories/questionRepo";
-import { GetAllVersions, UpdateVersion } from "../../../repositories/versionRepo";
+import { UpdateVersion } from "../../../repositories/versionRepo";
 import { ChangeEvent, useState } from "react";
 import { Alert, Button, ButtonGroup, Col, Form, Modal, Row, Spinner } from "react-bootstrap";
 import { ArrowDown, ArrowUp, Plus, Trash } from "react-bootstrap-icons";
+import { GetVariable, StorageVariable } from "../../../utils/localStorage";
 
 type FormControlElement = HTMLInputElement | HTMLTextAreaElement;
 
 interface QuestionEditorWithAnswersProps {
-    SurveyId: string,
     Question: Question,
     Version?: QuestionVersion,
     DefaultQuestionDetails?: QuestionDetails,
     QuestionDetails: QuestionDetails,
-    Profiles: Profile[]
 }
 
 enum SavingChangesState {
@@ -26,6 +25,9 @@ enum SavingChangesState {
 }
 
 export function QuestionEditorWithAnswers(props: QuestionEditorWithAnswersProps) {
+    const params = useParams();
+    const surveyId = params.surveyId!;
+
     const defaultDetails: QuestionDetails | undefined = props.DefaultQuestionDetails;
     const questionDetails: QuestionDetails = props.QuestionDetails;
     const question = props.Question;
@@ -48,6 +50,16 @@ export function QuestionEditorWithAnswers(props: QuestionEditorWithAnswersProps)
     const handleShow = () => setShow(true);
 
     const hasDefault = defaultDetails !== undefined;
+
+    function GetAllVersions() {
+        const versionsPerQuestion = GetVariable(StorageVariable.QUESTION_VERSIONS);
+
+        if(!versionsPerQuestion) {
+            return [];
+        }
+
+        return versionsPerQuestion[question.ID!] ?? []
+    }
 
     function AreAnswersTheSame(a: string[], b: string[]) {
         if (a === b) return true;
@@ -113,10 +125,10 @@ export function QuestionEditorWithAnswers(props: QuestionEditorWithAnswersProps)
 
         if (version) {
             version.Details = newDetails;
-            await UpdateVersion(props.SurveyId, question.ID!, version.ID!, version);
+            await UpdateVersion(surveyId, question.ID!, version.ID!, version);
         } else {
             question.DefaultDetails = newDetails;
-            await UpdateQuestion(props.SurveyId, question.ID!, question);
+            await UpdateQuestion(surveyId, question.ID!, question);
         }
 
         FinishSaving();
@@ -166,9 +178,9 @@ export function QuestionEditorWithAnswers(props: QuestionEditorWithAnswersProps)
                 }
             };
             setDefaultAnswers(question.DefaultDetails.Answers);
-            await UpdateQuestion(props.SurveyId, question.ID!, newQuestion);
+            await UpdateQuestion(surveyId, question.ID!, newQuestion);
 
-            const versions = await GetAllVersions(props.SurveyId, question.ID!);
+            const versions = GetAllVersions();
             if (versions) {
                 for (let i = 0; i < versions.length; i++) {
                     const otherVersion = versions[i];
@@ -179,7 +191,7 @@ export function QuestionEditorWithAnswers(props: QuestionEditorWithAnswersProps)
                         otherVersion.Details.Answers.push(answerText);
                     }
 
-                    await UpdateVersion(props.SurveyId, question.ID!, otherVersion.ID!, otherVersion);
+                    await UpdateVersion(surveyId, question.ID!, otherVersion.ID!, otherVersion);
                 }
             }
         } else {
@@ -190,15 +202,15 @@ export function QuestionEditorWithAnswers(props: QuestionEditorWithAnswersProps)
                 QuestionType: question.QuestionType,
                 DefaultDetails: newDetails
             };
-            await UpdateQuestion(props.SurveyId, question.ID!, newQuestion);
+            await UpdateQuestion(surveyId, question.ID!, newQuestion);
 
-            const versions = await GetAllVersions(props.SurveyId, question.ID!);
+            const versions = GetAllVersions();
             if (versions) {
                 for (let i = 0; i < versions.length; i++) {
                     const version = versions[i];
                     version.Details.Answers.push(answerText);
 
-                    await UpdateVersion(props.SurveyId, question.ID!, version.ID!, version);
+                    await UpdateVersion(surveyId, question.ID!, version.ID!, version);
                 }
             }
         }
@@ -234,9 +246,9 @@ export function QuestionEditorWithAnswers(props: QuestionEditorWithAnswersProps)
                 }
             };
             setDefaultAnswers(question.DefaultDetails.Answers);
-            await UpdateQuestion(props.SurveyId, question.ID!, newQuestion);
+            await UpdateQuestion(surveyId, question.ID!, newQuestion);
 
-            const versions = await GetAllVersions(props.SurveyId, question.ID!);
+            const versions = GetAllVersions();
             if (versions) {
                 for (let i = 0; i < versions.length; i++) {
                     const otherVersion = versions[i];
@@ -247,7 +259,7 @@ export function QuestionEditorWithAnswers(props: QuestionEditorWithAnswersProps)
                         otherVersion.Details.Answers.splice(index);
                     }
 
-                    await UpdateVersion(props.SurveyId, question.ID!, otherVersion.ID!, otherVersion);
+                    await UpdateVersion(surveyId, question.ID!, otherVersion.ID!, otherVersion);
                 }
             }
         } else {
@@ -257,15 +269,15 @@ export function QuestionEditorWithAnswers(props: QuestionEditorWithAnswersProps)
                 QuestionType: question.QuestionType,
                 DefaultDetails: newDetails
             };
-            await UpdateQuestion(props.SurveyId, question.ID!, newQuestion);
+            await UpdateQuestion(surveyId, question.ID!, newQuestion);
 
-            const versions = await GetAllVersions(props.SurveyId, question.ID!);
+            const versions = GetAllVersions();
             if (versions) {
                 for (let i = 0; i < versions.length; i++) {
                     const version = versions[i];
                     version.Details.Answers.splice(index, 1);
 
-                    await UpdateVersion(props.SurveyId, question.ID!, version.ID!, version);
+                    await UpdateVersion(surveyId, question.ID!, version.ID!, version);
                 }
             }
         }
@@ -312,9 +324,9 @@ export function QuestionEditorWithAnswers(props: QuestionEditorWithAnswersProps)
                 }
             };
             setDefaultAnswers(newDefaultAnswers);
-            await UpdateQuestion(props.SurveyId, question.ID!, newQuestion);
+            await UpdateQuestion(surveyId, question.ID!, newQuestion);
 
-            const versions = await GetAllVersions(props.SurveyId, question.ID!);
+            const versions = GetAllVersions();
             if (versions) {
                 for (let i = 0; i < versions.length; i++) {
                     const otherVersion = versions[i];
@@ -326,7 +338,7 @@ export function QuestionEditorWithAnswers(props: QuestionEditorWithAnswersProps)
                         [versionAnswers[index], versionAnswers[newIndex]] = [versionAnswers[newIndex], versionAnswers[index]];
                     }
 
-                    await UpdateVersion(props.SurveyId, question.ID!, otherVersion.ID!, otherVersion);
+                    await UpdateVersion(surveyId, question.ID!, otherVersion.ID!, otherVersion);
                 }
             }
         } else {
@@ -336,16 +348,16 @@ export function QuestionEditorWithAnswers(props: QuestionEditorWithAnswersProps)
                 QuestionType: question.QuestionType,
                 DefaultDetails: newDetails
             };
-            await UpdateQuestion(props.SurveyId, question.ID!, newQuestion);
+            await UpdateQuestion(surveyId, question.ID!, newQuestion);
 
-            const versions = await GetAllVersions(props.SurveyId, question.ID!);
+            const versions = GetAllVersions();
             if (versions) {
                 for (let i = 0; i < versions.length; i++) {
                     const version = versions[i];
                     const versionAnswers = version.Details.Answers;
                     [versionAnswers[index], versionAnswers[newIndex]] = [versionAnswers[newIndex], versionAnswers[index]];
 
-                    await UpdateVersion(props.SurveyId, question.ID!, version.ID!, version);
+                    await UpdateVersion(surveyId, question.ID!, version.ID!, version);
                 }
             }
         }

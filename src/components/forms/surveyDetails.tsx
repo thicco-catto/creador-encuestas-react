@@ -37,9 +37,9 @@ export function SurveyDetailsForm(props: SurveyDetailsFormProps) {
         await UpdateSurvey(survey.ID, newSurvey);
 
         if(buttonClicked === "Questions") {
-            window.location.href = `/edit/${survey.ID}/question/${props.FirstQuestionID}`;
+            window.location.href = `/${survey.ID}/question/${props.FirstQuestionID}`;
         } else {
-            window.location.href = `/edit/${survey.ID}/profile`;
+            window.location.href = `/${survey.ID}/profile`;
         }
     }
 

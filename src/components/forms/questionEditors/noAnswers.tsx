@@ -1,4 +1,4 @@
-import { Profile } from "../../../models/Profile";
+import { useParams } from "react-router-dom";
 import { Question } from "../../../models/Question";
 import { QuestionDetails } from "../../../models/QuestionDetails";
 import { QuestionVersion } from "../../../models/QuestionVersion";
@@ -10,12 +10,10 @@ import { Alert, Button, Col, Form, Row, Spinner } from "react-bootstrap";
 type FormControlElement = HTMLInputElement | HTMLTextAreaElement;
 
 interface QuestionEditorNoAnswersProps {
-    SurveyId: string,
     Question: Question,
     Version?: QuestionVersion,
     DefaultQuestionDetails?: QuestionDetails,
     QuestionDetails: QuestionDetails,
-    Profiles: Profile[]
 }
 
 enum SavingChangesState {
@@ -25,6 +23,9 @@ enum SavingChangesState {
 }
 
 export function QuestionEditorNoAnswers(props: QuestionEditorNoAnswersProps) {
+    const params = useParams();
+    const surveyId = params.surveyId!;
+
     const defaultDetails: QuestionDetails | undefined = props.DefaultQuestionDetails;
     const questionDetails: QuestionDetails = props.QuestionDetails;
     const question = props.Question;
@@ -75,10 +76,10 @@ export function QuestionEditorNoAnswers(props: QuestionEditorNoAnswersProps) {
 
         if (version) {
             version.Details = newDetails;
-            await UpdateVersion(props.SurveyId, question.ID!, version.ID!, version);
+            await UpdateVersion(surveyId, question.ID!, version.ID!, version);
         } else {
             question.DefaultDetails = newDetails;
-            await UpdateQuestion(props.SurveyId, question.ID!, question);
+            await UpdateQuestion(surveyId, question.ID!, question);
         }
 
         FinishSaving();

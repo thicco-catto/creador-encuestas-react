@@ -43,9 +43,9 @@ export function NewSurveyForm() {
         await AddQuestion(addedSurvey.ID, sampleQuestion);
 
         if(buttonClicked === "Profiles") {
-            window.location.href = `/edit/${addedSurvey.ID}/profile`;
+            window.location.href = `/${addedSurvey.ID}/profile`;
         } else {
-            window.location.href = `/edit/${addedSurvey.ID}/question`;
+            window.location.href = `/${addedSurvey.ID}/question`;
         }
     }
 

@@ -11,6 +11,7 @@ import NewQuestion from "./app/[surveyId]/question/newQuestion";
 import VersionListPage from "./app/[surveyId]/question/[questionId]/version/versionList";
 import EditVersion from "./app/[surveyId]/question/[questionId]/version/[versionId]/editVersion";
 import NewVersion from "./app/[surveyId]/question/[questionId]/version/newVersion";
+import EditDefaultDetails from "./app/[surveyId]/question/[questionId]/version/editDefaultDetails";
 
 const browserRouter = createBrowserRouter([
     {
@@ -68,6 +69,10 @@ const browserRouter = createBrowserRouter([
     {
         path: "/:surveyId/question/:questionId/version/new",
         Component: NewVersion
+    },
+    {
+        path: "/:surveyId/question/:questionId/version/default",
+        Component: EditDefaultDetails
     }
 ]);
 
