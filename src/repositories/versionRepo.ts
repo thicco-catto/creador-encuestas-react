@@ -67,8 +67,8 @@ export async function UpdateVersion(surveyId: string, questionId: string, versio
         const versions = versionsPerQuestion[questionId] ?? [];
 
         versionsPerQuestion[questionId] = versions.map(x => {
-            if(x.ID === questionId) {
-                version.ID = questionId;
+            if(x.ID === versionId) {
+                version.ID = versionId;
                 return version;
             } else {
                 return x;

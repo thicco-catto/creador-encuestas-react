@@ -205,18 +205,15 @@ export function QuestionEditorWithAnswers(props: QuestionEditorWithAnswersProps)
             await UpdateQuestion(surveyId, question.ID!, newQuestion);
 
             const versions = GetAllVersions();
-            if (versions) {
-                for (let i = 0; i < versions.length; i++) {
-                    const version = versions[i];
-                    version.Details.Answers.push(answerText);
+            for (let i = 0; i < versions.length; i++) {
+                const version = versions[i];
+                version.Details.Answers.push(answerText);
 
-                    await UpdateVersion(surveyId, question.ID!, version.ID!, version);
-                }
+                await UpdateVersion(surveyId, question.ID!, version.ID!, version);
             }
         }
 
         setAnswers([...answers, answerText]);
-
         FinishSaving([...answers, answerText]);
     }
 
