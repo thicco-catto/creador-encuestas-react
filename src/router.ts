@@ -8,6 +8,7 @@ import EditProfile from "./app/[surveyId]/profile/[profileId]/editProfile";
 import QuestionListPage from "./app/[surveyId]/question/questionList";
 import EditQuestion from "./app/[surveyId]/question/[questionId]/editQuestion";
 import NewQuestion from "./app/[surveyId]/question/newQuestion";
+import VersionListPage from "./app/[surveyId]/question/[questionId]/version/versionList";
 
 const browserRouter = createBrowserRouter([
     {
@@ -51,6 +52,12 @@ const browserRouter = createBrowserRouter([
     {
         path: "/:surveyId/question/new",
         Component: NewQuestion
+    },
+
+    // Versions
+    {
+        path: "/:surveyId/question/:questionId/version",
+        Component: VersionListPage
     }
 ]);
 

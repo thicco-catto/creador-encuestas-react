@@ -17,7 +17,8 @@ function QuestionListPage() {
             setQuestionOrder(surveyData.QuestionOrder);
             setQuestions(questionsData)
         }
-    }, [questionOrder]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [JSON.stringify(questionOrder)]);
 
     if(!questions || !questionOrder) {
         return <></>;

@@ -1,17 +1,20 @@
+import { useParams } from "react-router-dom";
 import { QuestionVersion } from "../../models/QuestionVersion";
 import { DeleteVersion } from "../../repositories/versionRepo";
 import { useState } from "react";
 import { Modal, Button } from "react-bootstrap";
 
 interface VersionListElementProps {
-    SurveyID: string,
-    QuestionID: string,
     Version: QuestionVersion
 }
 
 function VersionListElement(props: VersionListElementProps) {
+    const params = useParams();
+    const surveyId = params.surveyId!;
+    const questionId = params.questionId!;
+
     const version = props.Version;
-    const baseVersionUrl = `/edit/${props.SurveyID}/question/${props.QuestionID}/version/${version.ID}`;
+    const baseVersionUrl = `/edit/${surveyId}/question/${questionId}/version/${version.ID}`;
 
     const [show, setShow] = useState(false);
 
@@ -20,10 +23,9 @@ function VersionListElement(props: VersionListElementProps) {
 
     const confirmDelete = async () => {
         handleClose();
-        await DeleteVersion(props.SurveyID, props.QuestionID, version.ID!);
+        await DeleteVersion(surveyId, questionId, version.ID!);
 
-        // TODO: Find alternative
-        // router.refresh();
+        window.location.reload();
     };
 
     return <li className="survey-list-element">
@@ -51,8 +53,6 @@ function VersionListElement(props: VersionListElementProps) {
 }
 
 interface VersionListProps {
-    SurveyID: string,
-    QuestionID: string,
     Versions: QuestionVersion[]
 }
 
@@ -61,22 +61,29 @@ interface VersionListProps {
  * @param props 
  */
 export function VersionList(props: VersionListProps) {
+    const params = useParams();
+    const surveyId = params.surveyId!;
+    const questionId = params.questionId!;
+
     const versions = props.Versions;
+
     return <>
+    <a href={`/${surveyId}/question/${questionId}/version/new`} className="no-style-link-white">
+        <Button variant="secondary" className="mb-3">Añadir</Button>
+    </a>
+
     <ul className="survey-list">
         <li className="survey-list-element">
             <h2>{"Por defecto"}</h2>
             <p>Esta versión de la pregunta se mostrará por defecto a todos los usuarios</p>
             <Button variant="secondary" disabled style={{marginRight: "10px"}}>Editar Información</Button>
-            <a href={`/edit/${props.SurveyID}/question/${props.QuestionID}/version/default`}><Button variant="secondary">Editar Respuestas</Button></a>
+            <a href={`/${surveyId}/question/${questionId}/version/default`}><Button variant="secondary">Editar Respuestas</Button></a>
             <Button variant="danger" style={{float: "right"}} disabled>Eliminar</Button>
         </li>
 
         {versions.map((version, i) =>
-            <VersionListElement key={i} SurveyID={props.SurveyID} QuestionID={props.QuestionID} Version={version}></VersionListElement>
+            <VersionListElement key={i} Version={version}></VersionListElement>
         )}
     </ul>
-
-    <a href={`/edit/${props.SurveyID}/question/${props.QuestionID}/version/new`} style={{textDecoration: "none", color:"white"}}><button className="btn btn-secondary">Añadir</button></a>
     </>;
 }

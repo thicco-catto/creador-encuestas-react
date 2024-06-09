@@ -68,7 +68,10 @@ export function QuestionList(props: QuestionListProps) {
     const questions = props.Questions;
 
     return <>
-        <a href={`/${surveyId}/question/new`} style={{ textDecoration: "none", color: "white" }}><button className="btn btn-secondary mb-3">Añadir</button></a>
+        <a href={`/${surveyId}/question/new`} className="no-style-link-white">
+            <Button variant="secondary" className="mb-3">Añadir</Button>
+        </a>
+
         <ul className="survey-list">
             {props.QuestionOrder.map((id) =>
                 <QuestionListElement key={id} Question={questions.find(x => x.ID === id)!}></QuestionListElement>
