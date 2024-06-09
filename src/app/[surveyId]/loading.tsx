@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import { GetVariable, RemoveVariable, SetVariable, StorageVariable } from "../../utils/localStorage";
 import { PageLayoutLoading } from "../../components/pageLayoutLoading";
 import { EditPageTemplate } from "../../components/editPageTemplate";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { GetQuestion } from "../../repositories/questionRepo";
 import { GetAllVersions } from "../../repositories/versionRepo";
 import { Question } from "../../models/Question";
@@ -19,13 +19,15 @@ function LoadingSurvey() {
     const [numQuestionsLoaded, setNumQuestionsLoaded] = useState(0);
     const [loadedProfiles, setLoadedProfiles] = useState(false);
 
-    async function LoadQuestions() {
+    const LoadQuestions = useCallback(async function(signal: AbortSignal) {
         const order = survey.QuestionOrder;
 
         const questions: Question[] = [];
         const versions: {[key: string]: QuestionVersion[]} = {};
 
         for (let i = 0; i < order.length; i++) {
+            if(signal.aborted) { return; }
+
             const questionId = order[i];
             
             const fetchedQuestion = await GetQuestion(surveyId, questionId)
@@ -39,14 +41,17 @@ function LoadingSurvey() {
                 }
             }
 
-            setNumQuestionsLoaded(numQuestionsLoaded + 1);
+            setNumQuestionsLoaded(i + 1);
         }
 
         SetVariable(StorageVariable.QUESTIONS, questions);
         SetVariable(StorageVariable.QUESTION_VERSIONS, versions);
-    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [JSON.stringify(survey.QuestionOrder), surveyId]);
 
-    async function LoadProfiles() {
+    const LoadProfiles = useCallback(async function(signal: AbortSignal) {
+        if(signal.aborted) { return; }
+
         const profiles = await GetAllProfiles(surveyId);
 
         if(profiles) {
@@ -54,20 +59,31 @@ function LoadingSurvey() {
 
             SetVariable(StorageVariable.PROFILES, profiles);
         }
-    }
+    }, [surveyId])
 
-    async function LoadSurveyStuff() {
-        await LoadQuestions();
-        await LoadProfiles();
-    }
+    const LoadSurveyStuff = useCallback(async function(signal: AbortSignal) {
+        await LoadQuestions(signal);
+        await LoadProfiles(signal);
+
+        if(signal.aborted) { return; }
+
+        window.location.href = `/${surveyId}`
+    }, [LoadProfiles, LoadQuestions, surveyId]);
 
     useEffect(() => {
+        const controller = new AbortController();
+        const signal = controller.signal;
+
         RemoveVariable(StorageVariable.QUESTIONS);
         RemoveVariable(StorageVariable.PROFILES);
         RemoveVariable(StorageVariable.QUESTION_VERSIONS);
 
-        LoadSurveyStuff();
-    });
+        LoadSurveyStuff(signal);
+
+        return () => {
+            controller.abort();
+        }
+    }, [LoadSurveyStuff]);
 
     return <>
         <PageLayoutLoading Survey={survey}>
@@ -78,14 +94,20 @@ function LoadingSurvey() {
                     numQuestionsLoaded === survey.QuestionOrder.length?
                     <p>¡Preguntas cargadas!</p>
                     :
-                    <p>{numQuestionsLoaded}/{survey.QuestionOrder.length} preguntas cargadas. <Spinner></Spinner></p>
+                    <div>
+                        <p>{numQuestionsLoaded}/{survey.QuestionOrder.length} preguntas cargadas.</p>
+                        <Spinner></Spinner>
+                    </div>
                 }
 
                 {
                     loadedProfiles?
                     <p>¡Perfiles cargados!</p>
                     :
-                    <p>Cargando perfiles... <Spinner></Spinner></p>
+                    <div>
+                        <p>Cargando perfiles...</p>
+                        <Spinner></Spinner>
+                    </div>
                 }
             </EditPageTemplate>
         </PageLayoutLoading>

@@ -46,7 +46,7 @@ function QuestionSidebarElement(props: QuestionsSidebarElementProps) {
         return <></>;
     }
 
-    return <a href={`/edit/${props.SurveyId}/question/${question.ID}`} className="no-style-link">
+    return <a href={`/${props.SurveyId}/question/${question.ID}`} className="no-style-link">
         <li className="question-sidebar-element" style={style}>
             {question.InternalTitle} {GetTypeIcon()} {GetVersionsIcon()}
         </li>
@@ -75,7 +75,7 @@ function ProfileSidebarElement(props: ProfileSidebarElementProps) {
         style.borderWidth = "4px";
     }
 
-    return <a href={`/edit/${props.SurveyId}/profile/${profile.ID}`} className="no-style-link"><li className="question-sidebar-element" style={style}>{profile.Title}</li></a>;
+    return <a href={`/${props.SurveyId}/profile/${profile.ID}`} className="no-style-link"><li className="question-sidebar-element" style={style}>{profile.Title}</li></a>;
 }
 
 interface QuestionsSidebarProps {
@@ -141,7 +141,7 @@ export function QuestionsSidebar(props: QuestionsSidebarProps) {
                     }
                 </li>
 
-                <li className="text-center"><a href={`/edit/${props.SurveyId}/question`}><button className="btn btn-secondary">Gestionar Preguntas</button></a></li>
+                <li className="text-center"><a href={`/${props.SurveyId}/question`}><button className="btn btn-secondary">Gestionar Preguntas</button></a></li>
             </ul>
         </Row>
 
@@ -166,7 +166,7 @@ export function QuestionsSidebar(props: QuestionsSidebarProps) {
                             <></>
                     }
                 </li>
-                <li className="text-center"><a href={`/edit/${props.SurveyId}/profile`}><button className="btn btn-secondary">Gestionar Perfiles</button></a></li>
+                <li className="text-center"><a href={`/${props.SurveyId}/profile`}><button className="btn btn-secondary">Gestionar Perfiles</button></a></li>
             </ul>
         </Row>
     </Container>;

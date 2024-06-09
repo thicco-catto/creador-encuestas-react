@@ -8,7 +8,9 @@ import { Delete, Get, Post, Put } from "./dbContext";
  * @returns An array of versions or undefined, if there was an error.
  */
 export async function GetAllVersions(surveyId: string, questionId: string): Promise<QuestionVersion[]|undefined> {
-    return await Get(`survey/${surveyId}/question/${questionId}/version`);
+    await new Promise(f => setTimeout(f, 500));
+    return [];
+    // return await Get(`survey/${surveyId}/question/${questionId}/version`);
 }
 
 /**

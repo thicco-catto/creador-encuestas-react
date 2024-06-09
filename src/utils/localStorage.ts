@@ -28,6 +28,7 @@ type StorageVariableTypes = {
  */
 export function GetVariable<T extends keyof StorageVariableTypes>(variable: T): StorageVariableTypes[T] | null {
     const fromLocalStorage = window.localStorage.getItem(variable);
+
     if(!fromLocalStorage) {
         return null;
     }

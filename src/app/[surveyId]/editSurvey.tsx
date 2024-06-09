@@ -18,7 +18,7 @@ function EditSurvey() {
             setSurvey(surveyData);
             setFirstQuestion(questionsData[0]);
         }
-    }, [survey, firstQuestion]);
+    }, []);
 
     if(!survey || !firstQuestion) {
         return <></>;

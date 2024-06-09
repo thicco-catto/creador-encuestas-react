@@ -37,14 +37,14 @@ export function NavBarWithSurvey(props: NavBarWithSurveyProps) {
 
     return <ul className="navbar-container">
         <NavBarButton Href="/" Text="Mis Encuestas"></NavBarButton>
-        <NavBarButton Href={`/edit/${survey.ID}`} Text={survey.Title}></NavBarButton>
-        <NavBarButton Href={`/edit/${survey.ID}/profile`} Text="Perfiles"></NavBarButton>
-        <NavBarButton Href={`/edit/${survey.ID}/question`} Text="Preguntas"></NavBarButton>
+        <NavBarButton Href={`/${survey.ID}`} Text={survey.Title}></NavBarButton>
+        <NavBarButton Href={`/${survey.ID}/profile`} Text="Perfiles"></NavBarButton>
+        <NavBarButton Href={`/${survey.ID}/question`} Text="Preguntas"></NavBarButton>
         {
             questionId?
             <>
-            <NavBarButton Href={`/edit/${survey.ID}/question/${questionId}`} Text="Información Pregunta"></NavBarButton>
-            <NavBarButton Href={`/edit/${survey.ID}/question/${questionId}/version`} Text="Versiones"></NavBarButton>
+            <NavBarButton Href={`/${survey.ID}/question/${questionId}`} Text="Información Pregunta"></NavBarButton>
+            <NavBarButton Href={`/${survey.ID}/question/${questionId}/version`} Text="Versiones"></NavBarButton>
             </>:
             <></>
         }

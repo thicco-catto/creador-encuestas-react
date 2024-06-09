@@ -27,17 +27,17 @@ export function PageLayout(props: React.PropsWithChildren<PageLayoutProps>) {
         const questionsData = GetVariable(StorageVariable.QUESTIONS);
         const profilesData = GetVariable(StorageVariable.PROFILES);
 
-        if(!survey || !questions || !profiles || survey.ID !== surveyId) {
+        if(!surveyData || !questionsData || !profilesData || surveyData.ID !== surveyId) {
             window.location.href = `/${surveyId}/loading`;
         } else {
             setSurvey(surveyData);
             setQuestions(questionsData);
             setProfiles(profilesData);
         }
-    }, [survey, questions, profiles, surveyId]);
+    }, [surveyId]);
 
     if(!survey || !questions || !profiles) {
-        return <></>;
+        return <h1>NADA</h1>;
     }
 
     const questionId = props.QuestionId;

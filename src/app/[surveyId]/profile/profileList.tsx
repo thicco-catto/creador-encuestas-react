@@ -14,7 +14,7 @@ function ProfileListPage() {
         if(profilesData) {
             setProfiles(profilesData)
         }
-    }, [profiles]);
+    }, []);
 
     if(!profiles) {
         return <></>;

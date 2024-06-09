@@ -52,7 +52,14 @@ export async function UpdateProfile(surveyId: string, profileId: string, profile
  
     const profiles = GetVariable(StorageVariable.PROFILES);
     if(profiles) {
-        const updatedProfiles = profiles.map(x => x.ID === profileId? profile : x);
+        const updatedProfiles = profiles.map(x => {
+            if(x.ID === profileId) {
+                profile.ID = profileId;
+                return profile;
+            } else {
+                return x;
+            }
+        });
         SetVariable(StorageVariable.PROFILES, updatedProfiles);
     }
 
