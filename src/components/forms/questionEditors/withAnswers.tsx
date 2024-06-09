@@ -287,7 +287,6 @@ export function QuestionEditorWithAnswers(props: QuestionEditorWithAnswersProps)
     }
 
     async function MoveAnswer(index: number, offset: number) {
-        console.log(index, offset)
         setSavingState(SavingChangesState.SAVING);
 
         const newIndex = index + offset;
@@ -389,7 +388,7 @@ export function QuestionEditorWithAnswers(props: QuestionEditorWithAnswersProps)
             </Row>
             {
                 answers.map((x, i) =>
-                    <Form.Group key={baseAnswers[i]}>
+                    <Form.Group key={`${i}-${baseAnswers[i]}`}>
                         {
                             hasDefault ?
                                 <Row>
