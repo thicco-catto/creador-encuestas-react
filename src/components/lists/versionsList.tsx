@@ -14,7 +14,7 @@ function VersionListElement(props: VersionListElementProps) {
     const questionId = params.questionId!;
 
     const version = props.Version;
-    const baseVersionUrl = `/edit/${surveyId}/question/${questionId}/version/${version.ID}`;
+    const baseVersionUrl = `/${surveyId}/question/${questionId}/version/${version.ID}`;
 
     const [show, setShow] = useState(false);
 

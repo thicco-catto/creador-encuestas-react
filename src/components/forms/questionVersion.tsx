@@ -1,12 +1,12 @@
+import { useParams } from "react-router-dom";
 import { Profile } from "../../models/Profile";
 import { QuestionVersion } from "../../models/QuestionVersion";
 import { AddVersion, UpdateVersion } from "../../repositories/versionRepo";
 import { Button, Form } from "react-bootstrap";
 import { Floppy2 } from "react-bootstrap-icons";
+import { ChangeEvent, FormEvent, useState } from "react";
 
 interface QuestionDetailsFormProps {
-    SurveyID: string,
-    QuestionID: string,
     Version: QuestionVersion,
     Profiles: Profile[]
 }
@@ -19,65 +19,102 @@ interface QuestionDetailsFormProps {
  * @param props 
  */
 export function QuestionVersionForm(props: QuestionDetailsFormProps) {
+    const params = useParams();
+    const surveyId = params.surveyId!;
+    const questionId = params.questionId!;
+
     const version: QuestionVersion = props.Version;
 
-    async function onSubmit(data: FormData) {
-        const selectedProfiles = props.Profiles.filter(x => {
-            return data.get(`profile-${x.ID}`);
-        }).map(x => x.ID!);
+    const [title, setTitle] = useState(version.Title);
+    const [description, setDescription] = useState(version.Description);
+    const [selectedProfiles, setSelectedProfiles] = useState(version.Profiles);
+
+    function onProfileCheckChange(e: ChangeEvent<HTMLInputElement>) {
+        const target = e.target
+        const value = target.name;
+        const checked = target.checked;
+
+        const newProfiles = selectedProfiles.filter(x => x !== value || checked);
+        setSelectedProfiles(newProfiles);
+    }
+
+    async function onSubmit(e: FormEvent) {
+        e.preventDefault();
 
         const newVersion: QuestionVersion = {
-            Title: data.get("title")!.toString(),
-            Description: data.get("description")!.toString(),
+            Title: title,
+            Description: description,
             Profiles: selectedProfiles,
             Details: version.Details
         };
 
         let id: string = version.ID!;
 
-        if(version.ID) {
-            await UpdateVersion(props.SurveyID, props.QuestionID, version.ID, newVersion);
+        if (version.ID) {
+            await UpdateVersion(surveyId, questionId, version.ID, newVersion);
         } else {
-            const addedVersion = await AddVersion(props.SurveyID, props.QuestionID, newVersion);
+            const addedVersion = await AddVersion(surveyId, questionId, newVersion);
 
-            if(!addedVersion) { return; }
+            if (!addedVersion) { return; }
 
             id = addedVersion.ID!;
         }
-        
-        window.location.href = `/edit/${props.SurveyID}/question/${props.QuestionID}/version/${id}/details`;
+
+        window.location.href = `/${surveyId}/question/${questionId}/version/${id}/details`;
     }
 
-    return <Form>
+    return <Form onSubmit={onSubmit}>
         <Form.Group className="mb-3">
             <Form.Label>Título interno:</Form.Label>
-            <Form.Control name="title" style={{width: "40%"}} required type="text" defaultValue={version.Title} placeholder="Este titulo solo se muestra en la aplicacion"></Form.Control>
+            <Form.Control
+                name="title"
+                style={{ width: "40%" }}
+                required
+                type="text"
+                defaultValue={title}
+                placeholder="Este titulo solo se muestra en la aplicacion"
+                onChange={e => setTitle(e.target.value)}
+            />
         </Form.Group>
 
         <Form.Group className="mb-3">
             <Form.Label>Descripción:</Form.Label>
-            <Form.Control name="description" as="textarea" rows={4} style={{resize: "none"}} defaultValue={version.Description} placeholder="Esta descripción no se mostrará al encuestado, solo es visible dentro de la aplicación"></Form.Control>
+            <Form.Control
+                name="description"
+                as="textarea"
+                rows={4}
+                style={{ resize: "none" }}
+                defaultValue={description}
+                placeholder="Esta descripción no se mostrará al encuestado, solo es visible dentro de la aplicación"
+                onChange={e => setDescription(e.target.value)}
+            />
         </Form.Group>
 
         <Form.Label htmlFor="private-description-input">Perfiles a los que aplica:</Form.Label>
         <br></br>
         {
             props.Profiles.map((profile) =>
-                <>
-                    <Form.Check name={`profile-${profile.ID}`} type="checkbox" key={profile.ID} id={profile.Title} label={profile.Title} defaultChecked={version.Profiles.includes(profile.ID!)}></Form.Check>
-                </>
+                <Form.Check
+                    name={`${profile.ID}`}
+                    type="checkbox"
+                    key={profile.ID}
+                    id={profile.Title}
+                    label={profile.Title}
+                    defaultChecked={selectedProfiles.includes(profile.ID!)}
+                    onChange={onProfileCheckChange}
+                />
             )
         }
-        <a href={`/edit/${props.SurveyID}/profile`} style={{fontSize: "larger"}}>Gestionar perfiles...</a>
+        <a href={`/${surveyId}/profile`} style={{ fontSize: "larger" }}>Gestionar perfiles...</a>
         <br></br>
 
-        <Button className="btn-secondary" type="submit" style={{marginTop: "20px"}}>
+        <Button className="btn-secondary" type="submit" style={{ marginTop: "20px" }}>
             <Floppy2></Floppy2> Continuar a Respuestas
         </Button>
         {
-            version.ID?
-            <Button className="btn-danger" type="button" style={{float: "right", marginTop: "20px"}}>Eliminar</Button> :
-            <></>
+            version.ID ?
+                <Button className="btn-danger" type="button" style={{ float: "right", marginTop: "20px" }}>Eliminar</Button> :
+                <></>
         }
     </Form>;
 }
