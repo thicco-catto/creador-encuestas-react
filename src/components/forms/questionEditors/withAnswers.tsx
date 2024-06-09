@@ -44,10 +44,10 @@ export function QuestionEditorWithAnswers(props: QuestionEditorWithAnswersProps)
     const [madeChanges, setMadeChanges] = useState(false);
     const [savingState, setSavingState] = useState(SavingChangesState.NONE);
 
-    const [show, setShow] = useState(false);
+    const [modalToShow, setModalToShow] = useState(-1);
 
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    const handleClose = () => setModalToShow(-1);
+    const handleShow = (toShow: number) => setModalToShow(toShow);
 
     const hasDefault = defaultDetails !== undefined;
 
@@ -164,20 +164,22 @@ export function QuestionEditorWithAnswers(props: QuestionEditorWithAnswersProps)
 
         setSavingState(SavingChangesState.SAVING);
 
+        let newDefaultAnswers: string[] | undefined = undefined;
+
         if (version) {
             //We're editing a version
+            newDefaultAnswers = [...defaultAnswers, answerText]
             const newQuestion: Question = {
                 HasVersions: true,
                 InternalTitle: question.InternalTitle,
                 QuestionType: question.QuestionType,
                 DefaultDetails: {
                     Title: question.DefaultDetails.Title,
-                    Answers: [...question.DefaultDetails.Answers, answerText],
+                    Answers: newDefaultAnswers,
                     First: question.DefaultDetails.First,
                     Last: question.DefaultDetails.Last
                 }
             };
-            setDefaultAnswers(question.DefaultDetails.Answers);
             await UpdateQuestion(surveyId, question.ID!, newQuestion);
 
             const versions = GetAllVersions();
@@ -214,6 +216,9 @@ export function QuestionEditorWithAnswers(props: QuestionEditorWithAnswersProps)
         }
 
         setAnswers([...answers, answerText]);
+        if(newDefaultAnswers) {
+            setDefaultAnswers([...newDefaultAnswers]);
+        }
         FinishSaving([...answers, answerText]);
     }
 
@@ -230,19 +235,22 @@ export function QuestionEditorWithAnswers(props: QuestionEditorWithAnswersProps)
             Last: questionDetails.Last
         };
 
+        let newDefaultAnswers: string[] | undefined = undefined;
+
         if (version) {
+            newDefaultAnswers = defaultAnswers.filter((_, i) => i !== index)
+
             const newQuestion: Question = {
                 HasVersions: true,
                 InternalTitle: question.InternalTitle,
                 QuestionType: question.QuestionType,
                 DefaultDetails: {
                     Title: question.DefaultDetails.Title,
-                    Answers: question.DefaultDetails.Answers.filter((_, i) => i !== index),
+                    Answers: newDefaultAnswers,
                     First: question.DefaultDetails.First,
                     Last: question.DefaultDetails.Last
                 }
             };
-            setDefaultAnswers(question.DefaultDetails.Answers);
             await UpdateQuestion(surveyId, question.ID!, newQuestion);
 
             const versions = GetAllVersions();
@@ -280,6 +288,9 @@ export function QuestionEditorWithAnswers(props: QuestionEditorWithAnswersProps)
         }
 
         setAnswers([...newAnswers]);
+        if(newDefaultAnswers) {
+            setDefaultAnswers([...newDefaultAnswers]);
+        }
         FinishSaving([...newAnswers]);
     }
 
@@ -305,8 +316,10 @@ export function QuestionEditorWithAnswers(props: QuestionEditorWithAnswersProps)
             Last: questionDetails.Last
         };
 
+        let newDefaultAnswers: string[] | undefined = undefined;
+
         if (version) {
-            const newDefaultAnswers = question.DefaultDetails.Answers;
+            newDefaultAnswers = [...question.DefaultDetails.Answers];
             [newDefaultAnswers[index], newDefaultAnswers[newIndex]] = [newDefaultAnswers[newIndex], newDefaultAnswers[index]];
             
             const newQuestion: Question = {
@@ -320,7 +333,6 @@ export function QuestionEditorWithAnswers(props: QuestionEditorWithAnswersProps)
                     Last: question.DefaultDetails.Last
                 }
             };
-            setDefaultAnswers(newDefaultAnswers);
             await UpdateQuestion(surveyId, question.ID!, newQuestion);
 
             const versions = GetAllVersions();
@@ -360,6 +372,9 @@ export function QuestionEditorWithAnswers(props: QuestionEditorWithAnswersProps)
         }
 
         setAnswers([...newAnswers]);
+        if(newDefaultAnswers) {
+            setDefaultAnswers(newDefaultAnswers);
+        }
         FinishSaving([...newAnswers]);
     }
 
@@ -410,11 +425,11 @@ export function QuestionEditorWithAnswers(props: QuestionEditorWithAnswersProps)
                                 <Form.Control onChange={e => ChangeAnswer(e, i)} required type="text" defaultValue={x} disabled={savingState === SavingChangesState.SAVING}></Form.Control>
                             </Col>
                             <Col md="auto">
-                                <Button onClick={handleShow} variant="secondary" className="icon-btn" disabled={savingState === SavingChangesState.SAVING || answers.length <= 1}>
+                                <Button onClick={() => handleShow(i)} variant="secondary" className="icon-btn" disabled={savingState === SavingChangesState.SAVING || answers.length <= 1}>
                                     <Trash size={30}></Trash>
                                 </Button>
 
-                                <Modal show={show} onHide={handleClose}>
+                                <Modal show={modalToShow === i} onHide={handleClose}>
                                     <Modal.Header closeButton>
                                         <Modal.Title>¿Eliminar esta respuesta?</Modal.Title>
                                     </Modal.Header>
