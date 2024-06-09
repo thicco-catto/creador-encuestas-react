@@ -12,6 +12,7 @@ import VersionListPage from "./app/[surveyId]/question/[questionId]/version/vers
 import EditVersion from "./app/[surveyId]/question/[questionId]/version/[versionId]/editVersion";
 import NewVersion from "./app/[surveyId]/question/[questionId]/version/newVersion";
 import EditDefaultDetails from "./app/[surveyId]/question/[questionId]/version/editDefaultDetails";
+import EditVersionDetails from "./app/[surveyId]/question/[questionId]/version/[versionId]/editDetails";
 
 const browserRouter = createBrowserRouter([
     {
@@ -73,6 +74,10 @@ const browserRouter = createBrowserRouter([
     {
         path: "/:surveyId/question/:questionId/version/default",
         Component: EditDefaultDetails
+    },
+    {
+        path: "/:surveyId/question/:questionId/version/:versionId/details",
+        Component: EditVersionDetails
     }
 ]);
 
