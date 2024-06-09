@@ -20,15 +20,15 @@ function EditQuestion() {
             const question = questionsData.find(x => x.ID === questionId);
             setQuestion(question ?? null);
         }
-    }, [question, questionId]);
+    }, [questionId]);
 
     if(!question) {
         return <></>;
     }
 
     return (
-        <PageLayout>
-            <EditPageTemplate Title="Lista de Preguntas">
+        <PageLayout QuestionId={questionId}>
+            <EditPageTemplate Title="Información Pregunta">
                 <QuestionForm Question={question}></QuestionForm>
             </EditPageTemplate>
         </PageLayout>

@@ -19,7 +19,7 @@ function EditProfile() {
             const foundProfile = profilesData.find(x => x.ID === profileId);
             setProfile(foundProfile ?? null);
         }
-    }, [profile, profileId]);
+    }, [profileId]);
 
     if(!profile) {
         return <></>;

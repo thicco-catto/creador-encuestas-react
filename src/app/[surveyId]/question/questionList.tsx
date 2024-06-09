@@ -17,7 +17,7 @@ function QuestionListPage() {
             setQuestionOrder(surveyData.QuestionOrder);
             setQuestions(questionsData)
         }
-    }, [questions, questionOrder]);
+    }, [questionOrder]);
 
     if(!questions || !questionOrder) {
         return <></>;
