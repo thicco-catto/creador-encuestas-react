@@ -53,7 +53,22 @@ export async function AddQuestion(surveyId: string, question: Question): Promise
  * @param question The ID field will be ignored
  */
 export async function UpdateQuestion(surveyId: string, questionId: string, question: Question) {
-    return await Put(`survey/${surveyId}/question/${questionId}`, question);
+    const result = await Put(`survey/${surveyId}/question/${questionId}`, question);
+ 
+    const questions = GetVariable(StorageVariable.QUESTIONS);
+    if(questions) {
+        const updatedQuestions = questions.map(x => {
+            if(x.ID === questionId) {
+                question.ID = questionId;
+                return question;
+            } else {
+                return x;
+            }
+        });
+        SetVariable(StorageVariable.QUESTIONS, updatedQuestions);
+    }
+
+    return result;
 }
 
 /**

@@ -1,4 +1,5 @@
 import { QuestionVersion } from "../models/QuestionVersion";
+import { GetVariable, SetVariable, StorageVariable } from "../utils/localStorage";
 import { Delete, Get, Post, Put } from "./dbContext";
 
 /**
@@ -30,7 +31,25 @@ export async function GetVersion(surveyId: string, questionId: string, versionId
  * @returns The added version, or undefined if there was an error.
  */
 export async function AddVersion(surveyId: string, questionId: string, version: QuestionVersion): Promise<QuestionVersion|undefined> {
-    return await Post(`survey/${surveyId}/question/${questionId}/version`, version);
+    const newVersion = await Post(`survey/${surveyId}/question/${questionId}/version`, version);
+
+    const questions = GetVariable(StorageVariable.QUESTIONS);
+    const versionsPerQuestion = GetVariable(StorageVariable.QUESTION_VERSIONS);
+    if(questions && versionsPerQuestion) {
+        const question = questions.find(x => x.ID === questionId);
+        if(question) {
+            question.HasVersions = true
+        }
+
+        const versions = versionsPerQuestion[questionId] ?? [];
+        versions.push(newVersion);
+        versionsPerQuestion[questionId] = versions;
+
+        SetVariable(StorageVariable.QUESTIONS, questions);
+        SetVariable(StorageVariable.QUESTION_VERSIONS, versionsPerQuestion);
+    }
+
+    return newVersion;
 }
 
 /**
@@ -41,7 +60,25 @@ export async function AddVersion(surveyId: string, questionId: string, version: 
  * @param version The ID field is ignored
  */
 export async function UpdateVersion(surveyId: string, questionId: string, versionId: string, version: QuestionVersion){
-    return await Put(`survey/${surveyId}/question/${questionId}/version/${versionId}`, version);
+    const result = await Put(`survey/${surveyId}/question/${questionId}/version/${versionId}`, version);
+
+    const versionsPerQuestion = GetVariable(StorageVariable.QUESTION_VERSIONS);
+    if(versionsPerQuestion) {
+        const versions = versionsPerQuestion[questionId] ?? [];
+
+        versionsPerQuestion[questionId] = versions.map(x => {
+            if(x.ID === questionId) {
+                version.ID = questionId;
+                return version;
+            } else {
+                return x;
+            }
+        });
+
+        SetVariable(StorageVariable.QUESTION_VERSIONS, versionsPerQuestion);
+    }
+
+    return result;
 }
 
 /**
@@ -51,5 +88,22 @@ export async function UpdateVersion(surveyId: string, questionId: string, versio
  * @param versionId
  */
 export async function DeleteVersion(surveyId: string, questionId: string, versionId: string) {
-    return await Delete(`survey/${surveyId}/question/${questionId}/version/${versionId}`);
+    const result = await Delete(`survey/${surveyId}/question/${questionId}/version/${versionId}`);
+
+    const questions = GetVariable(StorageVariable.QUESTIONS);
+    const versionsPerQuestion = GetVariable(StorageVariable.QUESTION_VERSIONS);
+    if(questions && versionsPerQuestion) {
+        const versions = versionsPerQuestion[questionId] ?? [];
+        versionsPerQuestion[questionId] = versions.filter(x => x.ID !== versionId);
+
+        const question = questions.find(x => x.ID === questionId);
+        if(question) {
+            question.HasVersions = versionsPerQuestion[questionId].length > 0;
+        }
+
+        SetVariable(StorageVariable.QUESTIONS, questions);
+        SetVariable(StorageVariable.QUESTION_VERSIONS, versionsPerQuestion);
+    }
+
+    return result;
 }

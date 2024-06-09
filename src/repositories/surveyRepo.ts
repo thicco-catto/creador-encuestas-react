@@ -29,6 +29,7 @@ export async function GetSurvey(id: string): Promise<Survey|undefined> {
 export async function UpdateSurvey(id: string, survey: Survey) {
     const result = await Put(`${SurveyBackendPath}/${id}`, survey);
 
+    survey.ID = id;
     SetVariable(StorageVariable.SURVEY_INFO, survey);
 
     return result;
