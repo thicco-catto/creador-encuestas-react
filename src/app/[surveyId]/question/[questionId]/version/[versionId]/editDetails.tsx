@@ -36,7 +36,7 @@ function EditVersionDetails() {
     }
 
     return (
-        <PageLayout QuestionId={questionId}>
+        <PageLayout QuestionId={questionId} AffectedProfiles={version.Profiles}>
             <EditPageTemplate Title="Editar Respuestas Versión">
                 <QuestionEditor
                     Question={question}

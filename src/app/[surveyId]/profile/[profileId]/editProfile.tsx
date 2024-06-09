@@ -15,13 +15,13 @@ function EditProfile() {
     useEffect(() => {
         const profilesData = GetVariable(StorageVariable.PROFILES);
 
-        if(profilesData) {
+        if (profilesData) {
             const foundProfile = profilesData.find(x => x.ID === profileId);
             setProfile(foundProfile ?? null);
         }
     }, [profileId]);
 
-    if(!profile) {
+    if (!profile) {
         return <></>;
     }
 
@@ -30,7 +30,7 @@ function EditProfile() {
             <EditPageTemplate Title="Información Perfil">
                 <ProfileDetailsForm Profile={profile}></ProfileDetailsForm>
             </EditPageTemplate>
-    </PageLayout>
+        </PageLayout>
     );
 }
 

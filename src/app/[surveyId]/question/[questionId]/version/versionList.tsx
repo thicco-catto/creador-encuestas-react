@@ -25,7 +25,7 @@ function VersionListPage() {
     }
 
     return (
-        <PageLayout>
+        <PageLayout QuestionId={questionId}>
             <EditPageTemplate Title="Lista de Versiones">
                 <VersionList Versions={versions}></VersionList>
             </EditPageTemplate>
