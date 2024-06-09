@@ -23,7 +23,7 @@ function NewQuestion() {
 
     return (
         <PageLayout>
-            <EditPageTemplate Title="Información Pregunta">
+            <EditPageTemplate Title="Nueva Pregunta">
                 <QuestionForm Question={question}></QuestionForm>
             </EditPageTemplate>
         </PageLayout>

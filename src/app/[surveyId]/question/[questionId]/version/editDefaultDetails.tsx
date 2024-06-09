@@ -33,7 +33,7 @@ function EditDefaultDetails() {
 
     return (
         <PageLayout QuestionId={questionId}>
-            <EditPageTemplate Title="Información Pregunta">
+            <EditPageTemplate Title="Editar Respuestas">
                 <QuestionEditor
                     Question={question}
                     QuestionDetails={question.DefaultDetails}

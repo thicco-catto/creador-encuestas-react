@@ -37,7 +37,7 @@ function EditVersionDetails() {
 
     return (
         <PageLayout QuestionId={questionId}>
-            <EditPageTemplate Title="Información Pregunta">
+            <EditPageTemplate Title="Editar Respuestas Versión">
                 <QuestionEditor
                     Question={question}
                     QuestionDetails={version.Details}

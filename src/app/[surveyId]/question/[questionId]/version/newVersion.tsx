@@ -44,7 +44,7 @@ function NewVersion() {
 
     return (
         <PageLayout QuestionId={questionId}>
-            <EditPageTemplate Title="Información Pregunta">
+            <EditPageTemplate Title="Nueva Versión">
                 <QuestionVersionForm Version={version} Profiles={profiles}></QuestionVersionForm>
             </EditPageTemplate>
         </PageLayout>

@@ -22,7 +22,7 @@ function ProfileListPage() {
 
     return (
         <PageLayout>
-            <EditPageTemplate Title="Información Encuesta">
+            <EditPageTemplate Title="Lista de Perfiles">
                 <ProfileList Profiles={profiles}></ProfileList>
             </EditPageTemplate>
         </PageLayout>
