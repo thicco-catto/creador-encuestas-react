@@ -82,7 +82,9 @@ export function QuestionForm(props: QuestionDetailsFormProps) {
             newQuestion.DefaultDetails.Answers = newAnswers;
 
             const added = await AddQuestion(surveyId, newQuestion);
-            newId = added.ID!;
+            if(added) {
+                newId = added.ID!;
+            }
         }
 
         if (buttonClicked === "ToVersions") {

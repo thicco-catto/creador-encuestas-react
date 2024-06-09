@@ -27,8 +27,23 @@ export async function GetQuestion(surveyId: string, questionId: string): Promise
  * @param question The ID field will be ignored
  * @returns The added question, with the updated ID, or undefined if there was an error.
  */
-export async function AddQuestion(surveyId: string, question: Question): Promise<Question> {
-    return await Post(`survey/${surveyId}/question`, question);
+export async function AddQuestion(surveyId: string, question: Question): Promise<Question | undefined> {
+    const newQuestion = await Post(`survey/${surveyId}/question`, question);
+
+    if(newQuestion) {
+        const survey = GetVariable(StorageVariable.SURVEY_INFO);
+        const questions = GetVariable(StorageVariable.QUESTIONS);
+
+        if(survey && questions) {
+            survey.QuestionOrder.push(newQuestion.ID);
+            SetVariable(StorageVariable.SURVEY_INFO, survey);
+
+            questions.push(newQuestion);
+            SetVariable(StorageVariable.QUESTIONS, questions);
+        }
+    }
+
+    return newQuestion;
 }
 
 /**

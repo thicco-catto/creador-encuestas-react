@@ -7,6 +7,7 @@ import NewProfile from "./app/[surveyId]/profile/newProfile";
 import EditProfile from "./app/[surveyId]/profile/[profileId]/editProfile";
 import QuestionListPage from "./app/[surveyId]/question/questionList";
 import EditQuestion from "./app/[surveyId]/question/[questionId]/editQuestion";
+import NewQuestion from "./app/[surveyId]/question/newQuestion";
 
 const browserRouter = createBrowserRouter([
     {
@@ -46,6 +47,10 @@ const browserRouter = createBrowserRouter([
     {
         path: "/:surveyId/question/:questionId",
         Component: EditQuestion
+    },
+    {
+        path: "/:surveyId/question/new",
+        Component: NewQuestion
     }
 ]);
 
