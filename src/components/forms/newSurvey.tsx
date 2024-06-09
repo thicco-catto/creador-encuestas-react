@@ -2,8 +2,9 @@ import { Question, QuestionType } from "../../models/Question";
 import { Survey } from "../../models/Survey";
 import { AddQuestion } from "../../repositories/questionRepo";
 import { AddSurvey } from "../../repositories/surveyRepo";
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import { Button, Form } from "react-bootstrap";
+import { RemoveVariable, SetVariable, StorageVariable } from "../../utils/localStorage";
 
 
 /**
@@ -13,12 +14,18 @@ import { Button, Form } from "react-bootstrap";
 export function NewSurveyForm() {
     const [buttonClicked, setButtonClicked] = useState("None");
 
-    async function onSubmit(data: FormData) {
+    const [title, setTitle] = useState("");
+    const [publicDesc, setPublicDesc] = useState("");
+    const [privateDesc, setPrivateDesc] = useState("");
+
+    async function onSubmit(e: FormEvent) {
+        e.preventDefault();
+
         const newSurvey: Survey = {
             ID: "1",
-            Title: data.get("title")!.toString(),
-            PublicDescription: data.get("publicDescription")!.toString(),
-            PrivateDescription: data.get("privateDescription")!.toString(),
+            Title: title,
+            PublicDescription: publicDesc,
+            PrivateDescription: privateDesc,
             QuestionOrder: []
         };
 
@@ -40,7 +47,22 @@ export function NewSurveyForm() {
             }
         };
 
-        await AddQuestion(addedSurvey.ID, sampleQuestion);
+        const addedQuestion = await AddQuestion(addedSurvey.ID, sampleQuestion);
+
+        RemoveVariable(StorageVariable.SURVEY_INFO);
+        RemoveVariable(StorageVariable.QUESTIONS);
+        RemoveVariable(StorageVariable.PROFILES);
+        RemoveVariable(StorageVariable.QUESTION_VERSIONS);
+
+        addedSurvey.QuestionOrder = [addedQuestion?.ID!]
+        SetVariable(StorageVariable.SURVEY_INFO, addedSurvey);
+        SetVariable(StorageVariable.PROFILES, []);
+        if(addedQuestion) {
+            SetVariable(StorageVariable.QUESTIONS, [addedQuestion])
+            SetVariable(StorageVariable.QUESTION_VERSIONS, {
+                [addedQuestion.ID!]: []
+            });
+        }
 
         if(buttonClicked === "Profiles") {
             window.location.href = `/${addedSurvey.ID}/profile`;
@@ -49,20 +71,46 @@ export function NewSurveyForm() {
         }
     }
 
-    return <Form>
+    return <Form onSubmit={onSubmit}>
         <Form.Group className="mb-3">
             <Form.Label htmlFor="title">Título de la encuesta:</Form.Label>
-            <Form.Control id="title" name="title" style={{width: "40%"}} required type="text" placeholder="Titulo de la encuesta"></Form.Control>
+            <Form.Control
+                id="title"
+                name="title"
+                style={{width: "40%"}}
+                required
+                type="text"
+                placeholder="Titulo de la encuesta"
+                onChange={e => setTitle(e.target.value)}
+            />
         </Form.Group>
 
         <Form.Group className="mb-3">
             <Form.Label htmlFor="privateDescription">Descripción privada:</Form.Label>
-            <Form.Control required id="privateDescription" name="privateDescription" as="textarea" rows={4} style={{resize: "none"}} placeholder="Esta descripción no se mostrará al encuestado, solo es visible dentro de la aplicación"></Form.Control>
+            <Form.Control
+                required
+                id="privateDescription"
+                name="privateDescription"
+                as="textarea"
+                rows={4}
+                style={{resize: "none"}}
+                placeholder="Esta descripción no se mostrará al encuestado, solo es visible dentro de la aplicación"
+                onChange={e => setPrivateDesc(e.target.value)}
+            />
         </Form.Group>
 
         <Form.Group className="mb-3">
             <Form.Label htmlFor="publicDescription">Descripción publica:</Form.Label>
-            <Form.Control required id="publicDescription" name="publicDescription" as="textarea" rows={4} style={{resize: "none"}} placeholder="Esta descripción se mostrará al encuestado antes de comenzar"></Form.Control>
+            <Form.Control
+                required
+                id="publicDescription"
+                name="publicDescription"
+                as="textarea"
+                rows={4}
+                style={{resize: "none"}}
+                placeholder="Esta descripción se mostrará al encuestado antes de comenzar"
+                onChange={e => setPublicDesc(e.target.value)}
+            />
         </Form.Group>
 
         <Button onClick={() => setButtonClicked("Profiles")} variant="secondary" className="me-3" type="submit">Continuar a Perfiles</Button>

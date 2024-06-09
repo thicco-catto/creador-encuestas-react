@@ -13,6 +13,7 @@ import EditVersion from "./app/[surveyId]/question/[questionId]/version/[version
 import NewVersion from "./app/[surveyId]/question/[questionId]/version/newVersion";
 import EditDefaultDetails from "./app/[surveyId]/question/[questionId]/version/editDefaultDetails";
 import EditVersionDetails from "./app/[surveyId]/question/[questionId]/version/[versionId]/editDetails";
+import NewSurvey from "./app/new";
 
 const browserRouter = createBrowserRouter([
     {
@@ -28,6 +29,10 @@ const browserRouter = createBrowserRouter([
     {
         path: "/:surveyId",
         Component: EditSurvey
+    },
+    {
+        path: "/new",
+        Component: NewSurvey
     },
 
     // Profiles
