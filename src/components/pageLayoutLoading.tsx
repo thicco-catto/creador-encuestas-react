@@ -5,13 +5,14 @@ import { QuestionsSidebarLoading } from "./navigation/questionSidebarLoading";
 
 interface PageLayoutProps {
     Survey: Survey,
+    Disabled?: boolean
 }
 
 export function PageLayoutLoading(props: React.PropsWithChildren<PageLayoutProps>) {
     const survey = props.Survey;
 
     return <>
-        <NavBarWithSurvey Survey={survey}></NavBarWithSurvey>
+        <NavBarWithSurvey Disabled={props.Disabled} Survey={survey}></NavBarWithSurvey>
 
         <Container className="p-0 m-0" style={{ height: "100%" }}>
             <Row style={{ height: "100%" }}>

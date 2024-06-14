@@ -26,11 +26,22 @@ li.navbar-button {
   border-left: 2px solid white;
 }
 
+li.navbar-button-disabled {
+  float: right;
+  border-left: 2px solid gray;
+  display: block;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  cursor: not-allowed;
+  color: gray;
+}
+
 li.navbar-button a.navbar-link {
-display: block;
-text-align: center;
-padding: 14px 16px;
-text-decoration: none;
+  display: block;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
 }
 
 li.navbar-button a.navbar-link:hover {

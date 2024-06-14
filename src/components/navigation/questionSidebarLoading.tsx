@@ -11,7 +11,7 @@ export function QuestionsSidebarLoading() {
             <ul style={{ listStyle: "none", padding: "4px" }}>
                 <li><h4 className="text-center">Preguntas</h4></li>
 
-                <li><Spinner></Spinner></li>
+                <li className="text-center"><Spinner></Spinner></li>
 
                 <li className="text-center">
                     <Button disabled={true} className="btn btn-secondary">Gestionar Preguntas</Button>
@@ -23,7 +23,7 @@ export function QuestionsSidebarLoading() {
             <ul style={{ listStyle: "none", padding: "4px" }}>
                 <li><h4 className="text-center">Perfiles</h4></li>
 
-                <li><Spinner></Spinner></li>
+                <li className="text-center"><Spinner></Spinner></li>
 
                 <li className="text-center">
                     <Button disabled={true} variant="secondary">Gestionar Perfiles</Button>

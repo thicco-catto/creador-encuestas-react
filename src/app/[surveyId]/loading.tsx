@@ -19,23 +19,23 @@ function LoadingSurvey() {
     const [numQuestionsLoaded, setNumQuestionsLoaded] = useState(0);
     const [loadedProfiles, setLoadedProfiles] = useState(false);
 
-    const LoadQuestions = useCallback(async function(signal: AbortSignal) {
+    const LoadQuestions = useCallback(async function (signal: AbortSignal) {
         const order = survey.QuestionOrder;
 
         const questions: Question[] = [];
-        const versions: {[key: string]: QuestionVersion[]} = {};
+        const versions: { [key: string]: QuestionVersion[] } = {};
 
         for (let i = 0; i < order.length; i++) {
-            if(signal.aborted) { return; }
+            if (signal.aborted) { return; }
 
             const questionId = order[i];
-            
+
             const fetchedQuestion = await GetQuestion(surveyId, questionId)
 
-            if(fetchedQuestion) {
+            if (fetchedQuestion) {
                 const fetchedVersions = await GetAllVersions(surveyId, questionId);
 
-                if(fetchedVersions) {
+                if (fetchedVersions) {
                     versions[questionId] = fetchedVersions;
                     questions.push(fetchedQuestion);
                 }
@@ -46,26 +46,26 @@ function LoadingSurvey() {
 
         SetVariable(StorageVariable.QUESTIONS, questions);
         SetVariable(StorageVariable.QUESTION_VERSIONS, versions);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [JSON.stringify(survey.QuestionOrder), surveyId]);
 
-    const LoadProfiles = useCallback(async function(signal: AbortSignal) {
-        if(signal.aborted) { return; }
+    const LoadProfiles = useCallback(async function (signal: AbortSignal) {
+        if (signal.aborted) { return; }
 
         const profiles = await GetAllProfiles(surveyId);
 
-        if(profiles) {
+        if (profiles) {
             setLoadedProfiles(true);
 
             SetVariable(StorageVariable.PROFILES, profiles);
         }
     }, [surveyId])
 
-    const LoadSurveyStuff = useCallback(async function(signal: AbortSignal) {
+    const LoadSurveyStuff = useCallback(async function (signal: AbortSignal) {
         await LoadQuestions(signal);
         await LoadProfiles(signal);
 
-        if(signal.aborted) { return; }
+        if (signal.aborted) { return; }
 
         window.location.href = `/${surveyId}`
     }, [LoadProfiles, LoadQuestions, surveyId]);
@@ -86,29 +86,31 @@ function LoadingSurvey() {
     }, [LoadSurveyStuff]);
 
     return <>
-        <PageLayoutLoading Survey={survey}>
+        <PageLayoutLoading Disabled={true} Survey={survey}>
             <EditPageTemplate Title="Cargando Encuesta">
-                <p>Este proceso no debería tomar mucho tiempo. Cuando termine, se le redigirá automáticamente.</p>
-
                 {
-                    numQuestionsLoaded === survey.QuestionOrder.length?
-                    <p>¡Preguntas cargadas!</p>
-                    :
-                    <div>
-                        <p>{numQuestionsLoaded}/{survey.QuestionOrder.length} preguntas cargadas.</p>
-                        <Spinner></Spinner>
-                    </div>
+                    numQuestionsLoaded === survey.QuestionOrder.length ?
+                        <h4>¡Preguntas cargadas!</h4>
+                        :
+                        <div>
+                            <h4>{numQuestionsLoaded}/{survey.QuestionOrder.length} preguntas cargadas...</h4>
+                            <Spinner></Spinner>
+                        </div>
                 }
 
+                <div className="mt-4"></div>
+
                 {
-                    loadedProfiles?
-                    <p>¡Perfiles cargados!</p>
-                    :
-                    <div>
-                        <p>Cargando perfiles...</p>
-                        <Spinner></Spinner>
-                    </div>
+                    loadedProfiles ?
+                        <h4>¡Perfiles cargados!</h4>
+                        :
+                        <div>
+                            <h4>Cargando perfiles...</h4>
+                            <Spinner></Spinner>
+                        </div>
                 }
+
+                <p className="mt-5">Este proceso no debería tomar mucho tiempo. Cuando termine, se le redigirá automáticamente.</p>
             </EditPageTemplate>
         </PageLayoutLoading>
     </>;

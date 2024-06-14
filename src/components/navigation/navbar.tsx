@@ -2,11 +2,21 @@ import { Survey } from "../../models/Survey";
 
 interface NavBarButtonProps {
     Text: string,
-    Href: string
+    Href: string,
+    Disabled: boolean
 }
 
 function NavBarButton(props: NavBarButtonProps) {
-    return <li className="navbar-button"><a href={props.Href} className="navbar-link text-white">{props.Text}</a></li>;
+    const className = props.Disabled? "navbar-button-disabled" : "navbar-button";
+
+    return <li className={className}>
+        {
+            props.Disabled?
+            <div>{props.Text}</div>
+            :
+            <a href={props.Href} className="navbar-link text-white">{props.Text}</a>
+        }
+    </li>;
 }
 
 
@@ -16,13 +26,14 @@ function NavBarButton(props: NavBarButtonProps) {
  */
 export function NavBar() {
     return <ul className="navbar-container">
-        <NavBarButton Href="/" Text="Mis Encuestas"></NavBarButton>
+        <NavBarButton Disabled={false} Href="/" Text="Mis Encuestas"></NavBarButton>
     </ul>;
 }
 
 interface NavBarWithSurveyProps {
     Survey: Survey,
-    QuestionId?: string
+    QuestionId?: string,
+    Disabled?: boolean
 }
 
 /**
@@ -35,16 +46,18 @@ export function NavBarWithSurvey(props: NavBarWithSurveyProps) {
     const survey = props.Survey;
     const questionId = props.QuestionId;
 
+    const disabled = props.Disabled ?? false;
+
     return <ul className="navbar-container">
-        <NavBarButton Href="/" Text="Mis Encuestas"></NavBarButton>
-        <NavBarButton Href={`/${survey.ID}`} Text={survey.Title}></NavBarButton>
-        <NavBarButton Href={`/${survey.ID}/profile`} Text="Perfiles"></NavBarButton>
-        <NavBarButton Href={`/${survey.ID}/question`} Text="Preguntas"></NavBarButton>
+        <NavBarButton Disabled={false} Href="/" Text="Mis Encuestas"></NavBarButton>
+        <NavBarButton Disabled={disabled} Href={`/${survey.ID}`} Text={survey.Title}></NavBarButton>
+        <NavBarButton Disabled={disabled} Href={`/${survey.ID}/profile`} Text="Perfiles"></NavBarButton>
+        <NavBarButton Disabled={disabled} Href={`/${survey.ID}/question`} Text="Preguntas"></NavBarButton>
         {
             questionId?
             <>
-            <NavBarButton Href={`/${survey.ID}/question/${questionId}`} Text="Información Pregunta"></NavBarButton>
-            <NavBarButton Href={`/${survey.ID}/question/${questionId}/version`} Text="Versiones"></NavBarButton>
+            <NavBarButton Disabled={disabled} Href={`/${survey.ID}/question/${questionId}`} Text="Información Pregunta"></NavBarButton>
+            <NavBarButton Disabled={disabled} Href={`/${survey.ID}/question/${questionId}/version`} Text="Versiones"></NavBarButton>
             </>:
             <></>
         }
