@@ -5,6 +5,7 @@ import { Survey } from "../../models/Survey";
 import { Question } from "../../models/Question";
 import { useEffect, useState } from "react";
 import { CheckUserLoggedIn } from "../../components/checkUser";
+import { PageLayout } from "../../components/pageLayout";
 
 function EditSurvey() {
     const [survey, setSurvey] = useState<Survey | null>(null);
@@ -25,11 +26,11 @@ function EditSurvey() {
     }
 
     return <CheckUserLoggedIn>
-        <CheckUserLoggedIn>
+        <PageLayout>
             <EditPageTemplate Title="Información Encuesta">
                 <SurveyDetailsForm Survey={survey} FirstQuestionID={firstQuestion.ID!}></SurveyDetailsForm>
             </EditPageTemplate>
-        </CheckUserLoggedIn>
+        </PageLayout>
     </CheckUserLoggedIn>;
 }
 
