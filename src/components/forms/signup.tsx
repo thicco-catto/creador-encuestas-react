@@ -38,7 +38,7 @@ export function SignUpForm() {
             <Form.Control
                 id="password"
                 name="password"
-                style={{resize: "none"}}
+                style={{width: "40%"}}
                 required
                 type="password"
                 defaultValue={password}
@@ -58,7 +58,7 @@ export function SignUpForm() {
             <Form.Control
                 id="repeat-password"
                 name="repeat-password"
-                style={{resize: "none"}}
+                style={{width: "40%"}}
                 required
                 type="password"
                 defaultValue={repeatPassword}

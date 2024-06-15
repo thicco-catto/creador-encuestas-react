@@ -11,7 +11,7 @@ import { LogInForm } from "../components/forms/login";
 function Home() {
     const [loading, setLoading] = useState(true);
     const [surveys, setSurveys] = useState<Survey[] | undefined>(undefined);
-    const [user, setUser] = useState<User | null>();
+    const [user, setUser] = useState<User | null>(null);
 
     async function LoadSurveys() {
         const fetchedSurveys = await GetAllSurveys()
@@ -28,7 +28,7 @@ function Home() {
     }, []);
 
     return <>
-        <NavBar></NavBar>
+        <NavBar User={user}></NavBar>
 
         <main>
             {

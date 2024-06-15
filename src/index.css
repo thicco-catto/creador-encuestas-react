@@ -44,8 +44,20 @@ li.navbar-button a.navbar-link {
   text-decoration: none;
 }
 
+li.navbar-button div.navbar-link {
+  display: block;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
 li.navbar-button a.navbar-link:hover {
-background-color: #111;
+  background-color: #111;
+}
+
+li.navbar-button div.navbar-link:hover {
+  background-color: #111;
 }
 
 ul.survey-list {

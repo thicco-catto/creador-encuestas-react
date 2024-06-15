@@ -1,4 +1,6 @@
+import { User } from "firebase/auth";
 import { Survey } from "../../models/Survey";
+import { LogOutCurrentUser } from "../../repositories/auth";
 
 interface NavBarButtonProps {
     Text: string,
@@ -20,20 +22,47 @@ function NavBarButton(props: NavBarButtonProps) {
 }
 
 
+function SignOutNavBarButton() {
+    async function onSignOutClick() {
+        await LogOutCurrentUser();
+        window.location.href = "/";
+    }
+
+    return <li onClick={onSignOutClick} className="navbar-button">
+        <div className="navbar-link text-white">Cerrar Sesión</div>
+    </li>;
+}
+
+
+interface NavBarProps {
+    User: User | null
+}
+
+
 /**
  * Displays the navbar of the app when no survey is selected.
  * @returns 
  */
-export function NavBar() {
-    return <ul className="navbar-container">
-        <NavBarButton Disabled={false} Href="/" Text="Mis Encuestas"></NavBarButton>
-    </ul>;
+export function NavBar(props: NavBarProps) {
+    const user = props.User;
+
+    if(user) {
+        return <ul className="navbar-container">
+            <SignOutNavBarButton></SignOutNavBarButton>
+            <NavBarButton Disabled={false} Href="/" Text="Mis Encuestas"></NavBarButton>
+        </ul>;
+    } else {
+        return <ul className="navbar-container">
+            <NavBarButton Disabled={false} Href="/login" Text="Iniciar Sesión"></NavBarButton>
+            <NavBarButton Disabled={false} Href="/signin" Text="Crear Cuenta"></NavBarButton>
+        </ul>;
+    }
 }
 
 interface NavBarWithSurveyProps {
     Survey: Survey,
     QuestionId?: string,
-    Disabled?: boolean
+    Disabled?: boolean,
 }
 
 /**
@@ -49,6 +78,7 @@ export function NavBarWithSurvey(props: NavBarWithSurveyProps) {
     const disabled = props.Disabled ?? false;
 
     return <ul className="navbar-container">
+        <SignOutNavBarButton></SignOutNavBarButton>
         <NavBarButton Disabled={false} Href="/" Text="Mis Encuestas"></NavBarButton>
         <NavBarButton Disabled={disabled} Href={`/${survey.ID}`} Text={survey.Title}></NavBarButton>
         <NavBarButton Disabled={disabled} Href={`/${survey.ID}/profile`} Text="Perfiles"></NavBarButton>
