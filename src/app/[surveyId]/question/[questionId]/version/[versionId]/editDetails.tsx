@@ -6,6 +6,7 @@ import { QuestionEditor } from "../../../../../../components/forms/questionEdito
 import { PageLayout } from "../../../../../../components/pageLayout";
 import { Question } from "../../../../../../models/Question";
 import { GetVariable, StorageVariable } from "../../../../../../utils/localStorage";
+import { CheckUserLoggedIn } from "../../../../../../components/checkUser";
 
 
 
@@ -35,7 +36,7 @@ function EditVersionDetails() {
         return <></>;
     }
 
-    return (
+    return <CheckUserLoggedIn>
         <PageLayout QuestionId={questionId} AffectedProfiles={version.Profiles}>
             <EditPageTemplate Title="Editar Respuestas Versión">
                 <QuestionEditor
@@ -46,7 +47,7 @@ function EditVersionDetails() {
                 />
             </EditPageTemplate>
         </PageLayout>
-    );
+    </CheckUserLoggedIn>;
 }
 
 export default EditVersionDetails;

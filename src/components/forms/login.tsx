@@ -10,6 +10,11 @@ export function LogInForm() {
         e.preventDefault();
 
         await LogInUser(email, password);
+
+        const relativePath = window.location.pathname;
+        if(relativePath !== "/") {
+            window.location.href = "/";
+        }
     }
 
     return <>
@@ -51,7 +56,7 @@ export function LogInForm() {
 
                 <p>¿No tienes cuenta?</p>
 
-                <Button as="a" href="/login" variant="secondary">
+                <Button as="a" href="/signup" variant="secondary">
                     Crear Cuenta
                 </Button>
             </div>

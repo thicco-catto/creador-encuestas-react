@@ -4,6 +4,7 @@ import { EditPageTemplate } from "../../../components/editPageTemplate";
 import { PageLayout } from "../../../components/pageLayout";
 import { QuestionList } from "../../../components/lists/questionList";
 import { Question } from "../../../models/Question";
+import { CheckUserLoggedIn } from "../../../components/checkUser";
 
 function QuestionListPage() {
     const [questions, setQuestions] = useState<Question[] | null>(null);
@@ -24,13 +25,13 @@ function QuestionListPage() {
         return <></>;
     }
 
-    return (
+    return <CheckUserLoggedIn>
         <PageLayout>
             <EditPageTemplate Title="Lista de Preguntas">
                 <QuestionList Questions={questions} QuestionOrder={questionOrder}></QuestionList>
             </EditPageTemplate>
         </PageLayout>
-    );
+    </CheckUserLoggedIn>;
 }
 
 export default QuestionListPage;

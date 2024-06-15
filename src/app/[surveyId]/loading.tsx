@@ -9,6 +9,7 @@ import { Question } from "../../models/Question";
 import { QuestionVersion } from "../../models/QuestionVersion";
 import { Spinner } from "react-bootstrap";
 import { GetAllProfiles } from "../../repositories/profilesRepo";
+import { CheckUserLoggedIn } from "../../components/checkUser";
 
 function LoadingSurvey() {
     const params = useParams();
@@ -85,7 +86,7 @@ function LoadingSurvey() {
         }
     }, [LoadSurveyStuff]);
 
-    return <>
+    return <CheckUserLoggedIn>
         <PageLayoutLoading Disabled={true} Survey={survey}>
             <EditPageTemplate Title="Cargando Encuesta">
                 {
@@ -113,7 +114,7 @@ function LoadingSurvey() {
                 <p className="mt-5">Este proceso no debería tomar mucho tiempo. Cuando termine, se le redigirá automáticamente.</p>
             </EditPageTemplate>
         </PageLayoutLoading>
-    </>;
+    </CheckUserLoggedIn>;
 }
 
 

@@ -5,6 +5,7 @@ import { ProfileDetailsForm } from "../../../../components/forms/profileDetails"
 import { PageLayout } from "../../../../components/pageLayout";
 import { Profile } from "../../../../models/Profile";
 import { GetVariable, StorageVariable } from "../../../../utils/localStorage";
+import { CheckUserLoggedIn } from "../../../../components/checkUser";
 
 function EditProfile() {
     const params = useParams();
@@ -25,13 +26,13 @@ function EditProfile() {
         return <></>;
     }
 
-    return (
+    return <CheckUserLoggedIn>
         <PageLayout SelectedProfile={params.profileId}>
             <EditPageTemplate Title="Información Perfil">
                 <ProfileDetailsForm Profile={profile}></ProfileDetailsForm>
             </EditPageTemplate>
         </PageLayout>
-    );
+    </CheckUserLoggedIn>;
 }
 
 export default EditProfile;

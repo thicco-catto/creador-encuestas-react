@@ -5,6 +5,7 @@ import { PageLayout } from "../../../../../components/pageLayout";
 import { GetVariable, StorageVariable } from "../../../../../utils/localStorage";
 import { QuestionVersion } from "../../../../../models/QuestionVersion";
 import { useParams } from "react-router-dom";
+import { CheckUserLoggedIn } from "../../../../../components/checkUser";
 
 function VersionListPage() {
     const params = useParams();
@@ -24,13 +25,13 @@ function VersionListPage() {
         return <></>;
     }
 
-    return (
+    return <CheckUserLoggedIn>
         <PageLayout QuestionId={questionId}>
             <EditPageTemplate Title="Lista de Versiones">
                 <VersionList Versions={versions}></VersionList>
             </EditPageTemplate>
         </PageLayout>
-    );
+    </CheckUserLoggedIn>;
 }
 
 export default VersionListPage;

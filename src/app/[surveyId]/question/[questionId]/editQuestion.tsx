@@ -5,6 +5,7 @@ import { PageLayout } from "../../../../components/pageLayout";
 import { Question } from "../../../../models/Question";
 import { GetVariable, StorageVariable } from "../../../../utils/localStorage";
 import { useParams } from "react-router-dom";
+import { CheckUserLoggedIn } from "../../../../components/checkUser";
 
 
 function EditQuestion() {
@@ -26,13 +27,13 @@ function EditQuestion() {
         return <></>;
     }
 
-    return (
+    return <CheckUserLoggedIn>
         <PageLayout QuestionId={questionId}>
             <EditPageTemplate Title="Información Pregunta">
                 <QuestionForm Question={question}></QuestionForm>
             </EditPageTemplate>
         </PageLayout>
-    );
+    </CheckUserLoggedIn>;
 }
 
 export default EditQuestion;

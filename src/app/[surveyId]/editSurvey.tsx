@@ -1,10 +1,10 @@
 import { GetVariable, StorageVariable } from "../../utils/localStorage";
 import { EditPageTemplate } from "../../components/editPageTemplate";
 import { SurveyDetailsForm } from "../../components/forms/surveyDetails";
-import { PageLayout } from "../../components/pageLayout";
 import { Survey } from "../../models/Survey";
 import { Question } from "../../models/Question";
 import { useEffect, useState } from "react";
+import { CheckUserLoggedIn } from "../../components/checkUser";
 
 function EditSurvey() {
     const [survey, setSurvey] = useState<Survey | null>(null);
@@ -24,13 +24,13 @@ function EditSurvey() {
         return <></>;
     }
 
-    return (
-        <PageLayout>
+    return <CheckUserLoggedIn>
+        <CheckUserLoggedIn>
             <EditPageTemplate Title="Información Encuesta">
                 <SurveyDetailsForm Survey={survey} FirstQuestionID={firstQuestion.ID!}></SurveyDetailsForm>
             </EditPageTemplate>
-        </PageLayout>
-    );
+        </CheckUserLoggedIn>
+    </CheckUserLoggedIn>;
 }
 
 export default EditSurvey;

@@ -6,6 +6,7 @@ import { PageLayout } from "../../../../../components/pageLayout";
 import { Question } from "../../../../../models/Question";
 import { GetVariable, StorageVariable } from "../../../../../utils/localStorage";
 import { Profile } from "../../../../../models/Profile";
+import { CheckUserLoggedIn } from "../../../../../components/checkUser";
 
 
 function EditDefaultDetails() {
@@ -31,7 +32,7 @@ function EditDefaultDetails() {
         return <></>;
     }
 
-    return (
+    return <CheckUserLoggedIn>
         <PageLayout QuestionId={questionId}>
             <EditPageTemplate Title="Editar Respuestas">
                 <QuestionEditor
@@ -40,7 +41,7 @@ function EditDefaultDetails() {
                 />
             </EditPageTemplate>
         </PageLayout>
-    );
+    </CheckUserLoggedIn>;
 }
 
 export default EditDefaultDetails;

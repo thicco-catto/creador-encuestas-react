@@ -15,6 +15,8 @@ export function SignUpForm() {
         }
 
         await SignUpUser(email, password);
+
+        window.location.href = "/";
     }
 
     return <>

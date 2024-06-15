@@ -6,6 +6,7 @@ import { Profile } from "../../../../../../models/Profile";
 import { EditPageTemplate } from "../../../../../../components/editPageTemplate";
 import { PageLayout } from "../../../../../../components/pageLayout";
 import { GetVariable, StorageVariable } from "../../../../../../utils/localStorage";
+import { CheckUserLoggedIn } from "../../../../../../components/checkUser";
 
 
 function EditVersion() {
@@ -32,13 +33,13 @@ function EditVersion() {
         return <></>;
     }
 
-    return (
+    return <CheckUserLoggedIn>
         <PageLayout QuestionId={questionId} AffectedProfiles={version.Profiles}>
             <EditPageTemplate Title="Información Versión">
                 <QuestionVersionForm Version={version} Profiles={profiles}></QuestionVersionForm>
             </EditPageTemplate>
         </PageLayout>
-    );
+    </CheckUserLoggedIn>;
 }
 
 export default EditVersion;

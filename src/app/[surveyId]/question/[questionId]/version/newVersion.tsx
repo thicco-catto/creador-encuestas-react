@@ -7,6 +7,7 @@ import { PageLayout } from "../../../../../components/pageLayout";
 import { Profile } from "../../../../../models/Profile";
 import { QuestionVersion } from "../../../../../models/QuestionVersion";
 import { GetVariable, StorageVariable } from "../../../../../utils/localStorage";
+import { CheckUserLoggedIn } from "../../../../../components/checkUser";
 
 
 function NewVersion() {
@@ -42,13 +43,13 @@ function NewVersion() {
         }
     };
 
-    return (
+    return <CheckUserLoggedIn>
         <PageLayout QuestionId={questionId}>
             <EditPageTemplate Title="Nueva Versión">
                 <QuestionVersionForm Version={version} Profiles={profiles}></QuestionVersionForm>
             </EditPageTemplate>
         </PageLayout>
-    );
+    </CheckUserLoggedIn>;
 }
 
 export default NewVersion;

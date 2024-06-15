@@ -1,3 +1,4 @@
+import { CheckUserLoggedIn } from "../../../components/checkUser";
 import { EditPageTemplate } from "../../../components/editPageTemplate";
 import { QuestionForm } from "../../../components/forms/questionForm";
 import { PageLayout } from "../../../components/pageLayout";
@@ -21,13 +22,13 @@ function NewQuestion() {
         }
     } 
 
-    return (
+    return <CheckUserLoggedIn>
         <PageLayout>
             <EditPageTemplate Title="Nueva Pregunta">
                 <QuestionForm Question={question}></QuestionForm>
             </EditPageTemplate>
         </PageLayout>
-    );
+    </CheckUserLoggedIn>;
 }
 
 export default NewQuestion;

@@ -4,6 +4,7 @@ import { Profile } from "../../../models/Profile";
 import { GetVariable, StorageVariable } from "../../../utils/localStorage";
 import { EditPageTemplate } from "../../../components/editPageTemplate";
 import { PageLayout } from "../../../components/pageLayout";
+import { CheckUserLoggedIn } from "../../../components/checkUser";
 
 function ProfileListPage() {
     const [profiles, setProfiles] = useState<Profile[] | null>(null);
@@ -20,13 +21,13 @@ function ProfileListPage() {
         return <></>;
     }
 
-    return (
+    return <CheckUserLoggedIn>
         <PageLayout>
             <EditPageTemplate Title="Lista de Perfiles">
                 <ProfileList Profiles={profiles}></ProfileList>
             </EditPageTemplate>
         </PageLayout>
-    );
+    </CheckUserLoggedIn>;
 }
 
 export default ProfileListPage;
