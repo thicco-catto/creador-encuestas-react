@@ -94,3 +94,7 @@ label {
   border: solid 2px #888888;
   padding: 3px
 }
+
+.help-container {
+  max-width: 50em;
+}

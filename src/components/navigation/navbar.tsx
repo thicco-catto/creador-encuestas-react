@@ -48,11 +48,13 @@ export function NavBar(props: NavBarProps) {
 
     if(user) {
         return <ul className="navbar-container">
+            <NavBarButton Disabled={false} Href="/help" Text="Ayuda"></NavBarButton>
             <SignOutNavBarButton></SignOutNavBarButton>
             <NavBarButton Disabled={false} Href="/" Text="Mis Encuestas"></NavBarButton>
         </ul>;
     } else {
         return <ul className="navbar-container">
+            <NavBarButton Disabled={false} Href="/help" Text="Ayuda"></NavBarButton>
             <NavBarButton Disabled={false} Href="/login" Text="Iniciar Sesión"></NavBarButton>
             <NavBarButton Disabled={false} Href="/signin" Text="Crear Cuenta"></NavBarButton>
         </ul>;
@@ -78,6 +80,7 @@ export function NavBarWithSurvey(props: NavBarWithSurveyProps) {
     const disabled = props.Disabled ?? false;
 
     return <ul className="navbar-container">
+        <NavBarButton Disabled={false} Href="/help" Text="Ayuda"></NavBarButton>
         <SignOutNavBarButton></SignOutNavBarButton>
         <NavBarButton Disabled={false} Href="/" Text="Mis Encuestas"></NavBarButton>
         <NavBarButton Disabled={disabled} Href={`/${survey.ID}`} Text={survey.Title}></NavBarButton>
