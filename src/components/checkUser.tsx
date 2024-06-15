@@ -1,4 +1,3 @@
-import { User } from "firebase/auth";
 import { PropsWithChildren, useEffect, useState } from "react";
 import { OnAuthStateChanged } from "../repositories/auth";
 import { Spinner } from "react-bootstrap";

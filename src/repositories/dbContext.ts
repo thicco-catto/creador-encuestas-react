@@ -24,13 +24,16 @@ export async function Get(path: string) {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function Post(path: string, data: any) {
     try {
+        const token = await GetCurrentUser()?.getIdToken() ?? "";
+
         const response = await fetch(backendUri + path, {
             method: "POST",
             mode: "cors",
             cache: "no-cache",
             credentials: "same-origin",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
             },
             redirect: "follow",
             referrerPolicy: "no-referrer",
@@ -82,13 +85,16 @@ export async function Put(path: string, data: any) {
 
 export async function Delete(path: string) {
     try {
+        const token = GetCurrentUser()?.getIdToken() ?? "";
+
         const response = await fetch(backendUri + path, {
             method: "DELETE",
             mode: "cors",
             cache: "no-cache",
             credentials: "same-origin",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
             },
             redirect: "follow",
             referrerPolicy: "no-referrer",
