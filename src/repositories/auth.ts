@@ -53,6 +53,19 @@ export async function LogInUser(email: string, password: string) {
 }
 
 
+/**
+ * Returns the current user that's logged in.
+ * 
+ * Can be null if there is no user logged in.
+ */
+export function GetCurrentUser() {
+    return auth.currentUser;
+}
+
+
+/**
+ * Logs out the current user.
+ */
 export async function LogOutCurrentUser() {
     await signOut(auth);
 }

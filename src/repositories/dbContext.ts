@@ -1,3 +1,5 @@
+import { GetCurrentUser } from "./auth";
+
 const backendUri = process.env["REACT_APP_BACKEND_URL"] as string;
 if (!backendUri) {
     console.log("You need to specify REACT_APP_BACKEND_URL in .env");
@@ -50,13 +52,16 @@ export async function Post(path: string, data: any) {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function Put(path: string, data: any) {
     try {
+        const token = GetCurrentUser()?.getIdToken() ?? "";
+
         const response = await fetch(backendUri + path, {
             method: "PUT",
             mode: "cors",
             cache: "no-cache",
             credentials: "same-origin",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
             },
             redirect: "follow",
             referrerPolicy: "no-referrer",
