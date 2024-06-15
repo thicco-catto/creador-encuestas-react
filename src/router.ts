@@ -14,11 +14,23 @@ import NewVersion from "./app/[surveyId]/question/[questionId]/version/newVersio
 import EditDefaultDetails from "./app/[surveyId]/question/[questionId]/version/editDefaultDetails";
 import EditVersionDetails from "./app/[surveyId]/question/[questionId]/version/[versionId]/editDetails";
 import NewSurvey from "./app/new";
+import LogIn from "./app/login";
+import SignUp from "./app/signup";
 
 const browserRouter = createBrowserRouter([
     {
         path: "/",
         Component: Home
+    },
+
+    // Account
+    {
+        path: "/login",
+        Component: LogIn
+    },
+    {
+        path: "/signup",
+        Component: SignUp
     },
 
     // Survey
