@@ -16,11 +16,16 @@ import EditVersionDetails from "./app/[surveyId]/question/[questionId]/version/[
 import NewSurvey from "./app/new";
 import LogIn from "./app/login";
 import SignUp from "./app/signup";
+import ListSurveys from "./app/listSurveys";
 
 const browserRouter = createBrowserRouter([
     {
         path: "/",
         Component: Home
+    },
+    {
+        path: "/list",
+        Component: ListSurveys
     },
 
     // Account

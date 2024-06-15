@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { User, createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
+import { User, createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth";
 
 // TODO: Replace the following with your app's Firebase project configuration
 // See: https://firebase.google.com/docs/web/learn-more#config-object
@@ -53,14 +53,17 @@ export async function LogInUser(email: string, password: string) {
 }
 
 
-/**
- * Returns the user that's currently logged in. If there are none, returns null.
- */
-export function GetCurrentUser() {
-    return auth.currentUser;
+export async function LogOutCurrentUser() {
+    await signOut(auth);
 }
 
 
+/**
+ * Calls the function passed as an argument when the authentication state changes.
+ * 
+ * The user can be null if there is no user currently logged in.
+ * @param onChanged 
+ */
 export function OnAuthStateChanged(onChanged: (user: User | null) => void) {
     onAuthStateChanged(auth, onChanged);
 }

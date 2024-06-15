@@ -6,6 +6,7 @@ function LogIn() {
         <NavBar></NavBar>
 
         <main>
+            <h1>Iniciar Sesión</h1>
             <LogInForm></LogInForm>
         </main>
     </>;

@@ -6,30 +6,25 @@ import { GetAllSurveys } from "../repositories/surveyRepo";
 import { Spinner } from "react-bootstrap";
 import { User } from "firebase/auth";
 import { OnAuthStateChanged } from "../repositories/auth";
+import { LogInForm } from "../components/forms/login";
 
 function Home() {
-    const [surveys, setSurveys] = useState<Survey[]>([]);
-    const [loaded, setLoaded] = useState(false);
-    const [errorLoading, setErrorLoading] = useState(false);
-
+    const [loading, setLoading] = useState(true);
+    const [surveys, setSurveys] = useState<Survey[] | undefined>(undefined);
     const [user, setUser] = useState<User | null>();
 
     async function LoadSurveys() {
-        const fetchedSurveys = await GetAllSurveys();
-
-        if (!fetchedSurveys) {
-            setErrorLoading(true);
-        } else {
-            setSurveys(fetchedSurveys);
-        }
-
-        setLoaded(true);
+        const fetchedSurveys = await GetAllSurveys()
+        setSurveys(fetchedSurveys);
     }
 
     useEffect(() => {
-        LoadSurveys();
+        OnAuthStateChanged((user) => {
+            setUser(user);
+            setLoading(false);
 
-        OnAuthStateChanged((user) => setUser(user));
+            LoadSurveys();
+        });
     }, []);
 
     return <>
@@ -37,27 +32,27 @@ function Home() {
 
         <main>
             {
-                user ?
-                    <h1>{user.email}</h1>
+                loading ?
+                    <Spinner></Spinner>
                     :
-                    <h1>NO USER</h1>
-            }
-
-            <h1>Mis Encuestas:</h1>
-            {
-                loaded ?
                     <>
                         {
-                            errorLoading ?
-                                <h2>Ha occurido un error al cargar el listado de encuestas. Vuelva a intentarlo más tarde.</h2>
+                            user ?
+                                <>
+                                    <h1>Lista de Encuestas</h1>
+                                    {
+                                        surveys?
+                                        <SurveyList Surveys={surveys}></SurveyList>
+                                        :
+                                        <Spinner></Spinner>
+                                    }
+                                </>
                                 :
-                                <SurveyList Surveys={surveys}></SurveyList>
+                                <>
+                                    <h1>Para acceder a la lista de encuestas y poder editarlas, inicia sesión</h1>
+                                    <LogInForm></LogInForm>
+                                </>
                         }
-                    </>
-                    :
-                    <>
-                        <h2>Cargando encuestas...</h2>
-                        <Spinner></Spinner>
                     </>
             }
         </main>
