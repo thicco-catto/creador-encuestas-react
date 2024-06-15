@@ -18,6 +18,7 @@ function LogIn() {
 
         <main>
             <h1>Iniciar Sesión</h1>
+            <hr style={{border: "2px solid"}}></hr>
             <LogInForm></LogInForm>
         </main>
     </>;

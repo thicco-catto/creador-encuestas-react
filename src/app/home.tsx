@@ -50,6 +50,7 @@ function Home() {
                                 :
                                 <>
                                     <h1>Para acceder a la lista de encuestas y poder editarlas, inicia sesión</h1>
+                                    <hr style={{border: "2px solid"}}></hr>
                                     <LogInForm></LogInForm>
                                 </>
                         }

@@ -26,8 +26,7 @@ function SurveyListElement(props: SurveyListElementProps) {
         await DeleteSurvey(survey.ID);
         handleClose();
 
-        // TODO: Find alternative
-        // router.refresh();
+        window.location.reload();
     };
 
     return <li className="survey-list-element">

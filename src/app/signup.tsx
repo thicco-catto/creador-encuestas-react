@@ -17,6 +17,8 @@ function SignUp() {
         <NavBar User={user}></NavBar>
 
         <main>
+            <h1>Crear Cuenta Nueva</h1>
+            <hr style={{border: "2px solid"}}></hr>
             <SignUpForm></SignUpForm>
         </main>
     </>;
