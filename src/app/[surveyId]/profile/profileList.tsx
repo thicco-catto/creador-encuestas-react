@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { ProfileList } from "../../../components/lists/profileList";
 import { Profile } from "../../../models/Profile";
 import { GetVariable, StorageVariable } from "../../../utils/localStorage";
-import { EditPageTemplate } from "../../../components/editPageTemplate";
-import { PageLayout } from "../../../components/pageLayout";
+import { PageTemplate } from "../../../components/editPageTemplate";
+import { EditSurveyPageLayout } from "../../../components/pageLayout";
 import { CheckUserLoggedIn } from "../../../components/checkUser";
 
 function ProfileListPage() {
@@ -22,11 +22,11 @@ function ProfileListPage() {
     }
 
     return <CheckUserLoggedIn>
-        <PageLayout>
-            <EditPageTemplate Title="Lista de Perfiles">
+        <EditSurveyPageLayout>
+            <PageTemplate Title="Lista de Perfiles">
                 <ProfileList Profiles={profiles}></ProfileList>
-            </EditPageTemplate>
-        </PageLayout>
+            </PageTemplate>
+        </EditSurveyPageLayout>
     </CheckUserLoggedIn>;
 }
 

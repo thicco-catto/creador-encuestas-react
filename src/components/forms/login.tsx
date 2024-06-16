@@ -6,10 +6,16 @@ export function LogInForm() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
+    const [error, setError] = useState(false);
+
     async function onSubmit(e: FormEvent) {
         e.preventDefault();
 
-        await LogInUser(email, password);
+        const loggedInUser = await LogInUser(email, password);
+        if(!loggedInUser) {
+            setError(true);
+            return;
+        }
 
         const relativePath = window.location.pathname;
         if(relativePath !== "/") {
@@ -47,7 +53,13 @@ export function LogInForm() {
                 />
             </Form.Group>
 
-            <div style={{ maxWidth: "40%" }}>
+            <div className="login-buttons-container">
+                {
+                    error?
+                    <p className="error-message">Email o contraseña incorrectos.</p>
+                    :
+                    <></>
+                }
                 <Button variant="secondary" type="submit" className="mb-3">
                     Iniciar Sesión
                 </Button>

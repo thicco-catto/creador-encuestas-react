@@ -7,6 +7,8 @@ export function SignUpForm() {
     const [password, setPassword] = useState("");
     const [repeatPassword, setRepeatPassword] = useState("");
 
+    const [error, setError] = useState(false);
+
     async function onSubmit(e: FormEvent) {
         e.preventDefault();
 
@@ -14,7 +16,11 @@ export function SignUpForm() {
             return;
         }
 
-        await SignUpUser(email, password);
+        const user = await SignUpUser(email, password);
+        if(!user) {
+            setError(true);
+            return;
+        }
 
         window.location.href = "/";
     }
@@ -69,7 +75,13 @@ export function SignUpForm() {
                 />
             </Form.Group>
 
-            <div style={{ maxWidth: "40%" }}>
+            <div className="login-buttons-container">
+                {
+                    error?
+                    <p className="error-message">Ha ocurrido un error al crear la cuenta.</p>
+                    :
+                    <></>
+                }
                 <Button variant="secondary" type="submit" disabled={password !== repeatPassword} className="mb-3">
                     Crear Cuenta
                 </Button>

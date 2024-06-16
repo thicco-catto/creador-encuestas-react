@@ -1,7 +1,7 @@
 import { CheckUserLoggedIn } from "../../../components/checkUser";
-import { EditPageTemplate } from "../../../components/editPageTemplate";
+import { PageTemplate } from "../../../components/editPageTemplate";
 import { QuestionForm } from "../../../components/forms/questionForm";
-import { PageLayout } from "../../../components/pageLayout";
+import { EditSurveyPageLayout } from "../../../components/pageLayout";
 import { Question, QuestionType } from "../../../models/Question";
 
 
@@ -23,11 +23,11 @@ function NewQuestion() {
     } 
 
     return <CheckUserLoggedIn>
-        <PageLayout>
-            <EditPageTemplate Title="Nueva Pregunta">
+        <EditSurveyPageLayout>
+            <PageTemplate Title="Nueva Pregunta">
                 <QuestionForm Question={question}></QuestionForm>
-            </EditPageTemplate>
-        </PageLayout>
+            </PageTemplate>
+        </EditSurveyPageLayout>
     </CheckUserLoggedIn>;
 }
 

@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { LogInForm } from "../components/forms/login";
 import { NavBar } from "../components/navigation/navbar";
 import { OnAuthStateChanged } from "../repositories/auth";
+import { PageTemplate } from "../components/editPageTemplate";
 
 function LogIn() {
     const [user, setUser] = useState<User | null>(null);
@@ -17,9 +18,9 @@ function LogIn() {
         <NavBar User={user}></NavBar>
 
         <main>
-            <h1>Iniciar Sesión</h1>
-            <hr style={{border: "2px solid"}}></hr>
-            <LogInForm></LogInForm>
+            <PageTemplate Title="Iniciar Sesión">
+                <LogInForm></LogInForm>
+            </PageTemplate>
         </main>
     </>;
 }

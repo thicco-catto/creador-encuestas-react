@@ -1,6 +1,6 @@
 import { User } from "firebase/auth";
 import { useState, useEffect } from "react";
-import { EditPageTemplate } from "../components/editPageTemplate";
+import { PageTemplate } from "../components/editPageTemplate";
 import { NewSurveyForm } from "../components/forms/newSurvey";
 import { NavBar } from "../components/navigation/navbar";
 import { OnAuthStateChanged } from "../repositories/auth";
@@ -18,9 +18,9 @@ function NewSurvey() {
     <NavBar User={user}></NavBar>
 
     <main>
-      <EditPageTemplate Title="Nueva Encuesta">
+      <PageTemplate Title="Nueva Encuesta">
         <NewSurveyForm></NewSurveyForm>
-      </EditPageTemplate>
+      </PageTemplate>
     </main>
   </>;
 }

@@ -14,7 +14,7 @@ interface PageLayoutProps {
     AffectedProfiles?: string[],
 }
 
-export function PageLayout(props: React.PropsWithChildren<PageLayoutProps>) {
+export function EditSurveyPageLayout(props: React.PropsWithChildren<PageLayoutProps>) {
     const params = useParams();
     const surveyId = params.surveyId!;
 

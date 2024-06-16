@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Question } from "../../../../../models/Question";
-import { EditPageTemplate } from "../../../../../components/editPageTemplate";
+import { PageTemplate } from "../../../../../components/editPageTemplate";
 import { QuestionVersionForm } from "../../../../../components/forms/questionVersion";
-import { PageLayout } from "../../../../../components/pageLayout";
+import { EditSurveyPageLayout } from "../../../../../components/pageLayout";
 import { Profile } from "../../../../../models/Profile";
 import { QuestionVersion } from "../../../../../models/QuestionVersion";
 import { GetVariable, StorageVariable } from "../../../../../utils/localStorage";
@@ -44,11 +44,11 @@ function NewVersion() {
     };
 
     return <CheckUserLoggedIn>
-        <PageLayout QuestionId={questionId}>
-            <EditPageTemplate Title="Nueva Versión">
+        <EditSurveyPageLayout QuestionId={questionId}>
+            <PageTemplate Title="Nueva Versión">
                 <QuestionVersionForm Version={version} Profiles={profiles}></QuestionVersionForm>
-            </EditPageTemplate>
-        </PageLayout>
+            </PageTemplate>
+        </EditSurveyPageLayout>
     </CheckUserLoggedIn>;
 }
 

@@ -3,6 +3,7 @@ import { SignUpForm } from "../components/forms/signup";
 import { User } from "firebase/auth";
 import { useState, useEffect } from "react";
 import { OnAuthStateChanged } from "../repositories/auth";
+import { PageTemplate } from "../components/editPageTemplate";
 
 function SignUp() {
     const [user, setUser] = useState<User | null>(null);
@@ -17,9 +18,9 @@ function SignUp() {
         <NavBar User={user}></NavBar>
 
         <main>
-            <h1>Crear Cuenta Nueva</h1>
-            <hr style={{border: "2px solid"}}></hr>
-            <SignUpForm></SignUpForm>
+            <PageTemplate Title="Crear Cuenta Nueva">
+                <SignUpForm></SignUpForm>
+            </PageTemplate>
         </main>
     </>;
 }

@@ -3,8 +3,8 @@ import { useParams } from "react-router-dom";
 import { QuestionVersionForm } from "../../../../../../components/forms/questionVersion";
 import { QuestionVersion } from "../../../../../../models/QuestionVersion";
 import { Profile } from "../../../../../../models/Profile";
-import { EditPageTemplate } from "../../../../../../components/editPageTemplate";
-import { PageLayout } from "../../../../../../components/pageLayout";
+import { PageTemplate } from "../../../../../../components/editPageTemplate";
+import { EditSurveyPageLayout } from "../../../../../../components/pageLayout";
 import { GetVariable, StorageVariable } from "../../../../../../utils/localStorage";
 import { CheckUserLoggedIn } from "../../../../../../components/checkUser";
 
@@ -34,11 +34,11 @@ function EditVersion() {
     }
 
     return <CheckUserLoggedIn>
-        <PageLayout QuestionId={questionId} AffectedProfiles={version.Profiles}>
-            <EditPageTemplate Title="Información Versión">
+        <EditSurveyPageLayout QuestionId={questionId} AffectedProfiles={version.Profiles}>
+            <PageTemplate Title="Información Versión">
                 <QuestionVersionForm Version={version} Profiles={profiles}></QuestionVersionForm>
-            </EditPageTemplate>
-        </PageLayout>
+            </PageTemplate>
+        </EditSurveyPageLayout>
     </CheckUserLoggedIn>;
 }
 

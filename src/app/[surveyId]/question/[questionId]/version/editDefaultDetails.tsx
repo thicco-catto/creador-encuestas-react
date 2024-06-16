@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { QuestionEditor } from "../../../../../components/forms/questionEditor";
-import { EditPageTemplate } from "../../../../../components/editPageTemplate";
-import { PageLayout } from "../../../../../components/pageLayout";
+import { PageTemplate } from "../../../../../components/editPageTemplate";
+import { EditSurveyPageLayout } from "../../../../../components/pageLayout";
 import { Question } from "../../../../../models/Question";
 import { GetVariable, StorageVariable } from "../../../../../utils/localStorage";
 import { Profile } from "../../../../../models/Profile";
@@ -33,14 +33,14 @@ function EditDefaultDetails() {
     }
 
     return <CheckUserLoggedIn>
-        <PageLayout QuestionId={questionId}>
-            <EditPageTemplate Title="Editar Respuestas">
+        <EditSurveyPageLayout QuestionId={questionId}>
+            <PageTemplate Title="Editar Respuestas">
                 <QuestionEditor
                     Question={question}
                     QuestionDetails={question.DefaultDetails}
                 />
-            </EditPageTemplate>
-        </PageLayout>
+            </PageTemplate>
+        </EditSurveyPageLayout>
     </CheckUserLoggedIn>;
 }
 

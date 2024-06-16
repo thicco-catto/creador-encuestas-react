@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import { GetVariable, RemoveVariable, SetVariable, StorageVariable } from "../../utils/localStorage";
 import { PageLayoutLoading } from "../../components/pageLayoutLoading";
-import { EditPageTemplate } from "../../components/editPageTemplate";
+import { PageTemplate } from "../../components/editPageTemplate";
 import { useCallback, useEffect, useState } from "react";
 import { GetQuestion } from "../../repositories/questionRepo";
 import { GetAllVersions } from "../../repositories/versionRepo";
@@ -88,7 +88,7 @@ function LoadingSurvey() {
 
     return <CheckUserLoggedIn>
         <PageLayoutLoading Disabled={true} Survey={survey}>
-            <EditPageTemplate Title="Cargando Encuesta">
+            <PageTemplate Title="Cargando Encuesta">
                 {
                     numQuestionsLoaded === survey.QuestionOrder.length ?
                         <h4>¡Preguntas cargadas!</h4>
@@ -112,7 +112,7 @@ function LoadingSurvey() {
                 }
 
                 <p className="mt-5">Este proceso no debería tomar mucho tiempo. Cuando termine, se le redigirá automáticamente.</p>
-            </EditPageTemplate>
+            </PageTemplate>
         </PageLayoutLoading>
     </CheckUserLoggedIn>;
 }

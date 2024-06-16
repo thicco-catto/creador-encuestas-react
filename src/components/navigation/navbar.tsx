@@ -56,7 +56,7 @@ export function NavBar(props: NavBarProps) {
         return <ul className="navbar-container">
             <NavBarButton Disabled={false} Href="/help" Text="Ayuda"></NavBarButton>
             <NavBarButton Disabled={false} Href="/login" Text="Iniciar Sesión"></NavBarButton>
-            <NavBarButton Disabled={false} Href="/signin" Text="Crear Cuenta"></NavBarButton>
+            <NavBarButton Disabled={false} Href="/signup" Text="Crear Cuenta"></NavBarButton>
         </ul>;
     }
 }

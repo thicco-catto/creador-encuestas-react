@@ -98,3 +98,11 @@ label {
 .help-container {
   max-width: 50em;
 }
+
+.error-message {
+  color: red;
+}
+
+.login-buttons-container {
+  max-width: 40%;
+}

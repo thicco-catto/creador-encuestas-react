@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { QuestionVersion } from "../../../../../../models/QuestionVersion";
-import { EditPageTemplate } from "../../../../../../components/editPageTemplate";
+import { PageTemplate } from "../../../../../../components/editPageTemplate";
 import { QuestionEditor } from "../../../../../../components/forms/questionEditor";
-import { PageLayout } from "../../../../../../components/pageLayout";
+import { EditSurveyPageLayout } from "../../../../../../components/pageLayout";
 import { Question } from "../../../../../../models/Question";
 import { GetVariable, StorageVariable } from "../../../../../../utils/localStorage";
 import { CheckUserLoggedIn } from "../../../../../../components/checkUser";
@@ -37,16 +37,16 @@ function EditVersionDetails() {
     }
 
     return <CheckUserLoggedIn>
-        <PageLayout QuestionId={questionId} AffectedProfiles={version.Profiles}>
-            <EditPageTemplate Title="Editar Respuestas Versión">
+        <EditSurveyPageLayout QuestionId={questionId} AffectedProfiles={version.Profiles}>
+            <PageTemplate Title="Editar Respuestas Versión">
                 <QuestionEditor
                     Question={question}
                     QuestionDetails={version.Details}
                     Version={version}
                     DefaultQuestionDetails={question.DefaultDetails}
                 />
-            </EditPageTemplate>
-        </PageLayout>
+            </PageTemplate>
+        </EditSurveyPageLayout>
     </CheckUserLoggedIn>;
 }
 

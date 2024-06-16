@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { VersionList } from "../../../../../components/lists/versionsList";
-import { EditPageTemplate } from "../../../../../components/editPageTemplate";
-import { PageLayout } from "../../../../../components/pageLayout";
+import { PageTemplate } from "../../../../../components/editPageTemplate";
+import { EditSurveyPageLayout } from "../../../../../components/pageLayout";
 import { GetVariable, StorageVariable } from "../../../../../utils/localStorage";
 import { QuestionVersion } from "../../../../../models/QuestionVersion";
 import { useParams } from "react-router-dom";
@@ -26,11 +26,11 @@ function VersionListPage() {
     }
 
     return <CheckUserLoggedIn>
-        <PageLayout QuestionId={questionId}>
-            <EditPageTemplate Title="Lista de Versiones">
+        <EditSurveyPageLayout QuestionId={questionId}>
+            <PageTemplate Title="Lista de Versiones">
                 <VersionList Versions={versions}></VersionList>
-            </EditPageTemplate>
-        </PageLayout>
+            </PageTemplate>
+        </EditSurveyPageLayout>
     </CheckUserLoggedIn>;
 }
 

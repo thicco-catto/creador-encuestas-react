@@ -7,6 +7,7 @@ import { Spinner } from "react-bootstrap";
 import { User } from "firebase/auth";
 import { OnAuthStateChanged } from "../repositories/auth";
 import { LogInForm } from "../components/forms/login";
+import { PageTemplate } from "../components/editPageTemplate";
 
 function Home() {
     const [loading, setLoading] = useState(true);
@@ -38,21 +39,18 @@ function Home() {
                     <>
                         {
                             user ?
-                                <>
-                                    <h1>Lista de Encuestas</h1>
+                                    <PageTemplate Title="Lista de Encuestas">
                                     {
                                         surveys?
                                         <SurveyList Surveys={surveys}></SurveyList>
                                         :
                                         <Spinner></Spinner>
                                     }
-                                </>
+                                    </PageTemplate>
                                 :
-                                <>
-                                    <h1>Para acceder a la lista de encuestas y poder editarlas, inicia sesión</h1>
-                                    <hr style={{border: "2px solid"}}></hr>
+                                <PageTemplate Title="Para acceder a la lista de encuestas y poder editarlas, inicia sesión">
                                     <LogInForm></LogInForm>
-                                </>
+                                </PageTemplate>
                         }
                     </>
             }

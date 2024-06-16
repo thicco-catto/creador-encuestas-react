@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { GetVariable, StorageVariable } from "../../../utils/localStorage";
-import { EditPageTemplate } from "../../../components/editPageTemplate";
-import { PageLayout } from "../../../components/pageLayout";
+import { PageTemplate } from "../../../components/editPageTemplate";
+import { EditSurveyPageLayout } from "../../../components/pageLayout";
 import { QuestionList } from "../../../components/lists/questionList";
 import { Question } from "../../../models/Question";
 import { CheckUserLoggedIn } from "../../../components/checkUser";
@@ -26,11 +26,11 @@ function QuestionListPage() {
     }
 
     return <CheckUserLoggedIn>
-        <PageLayout>
-            <EditPageTemplate Title="Lista de Preguntas">
+        <EditSurveyPageLayout>
+            <PageTemplate Title="Lista de Preguntas">
                 <QuestionList Questions={questions} QuestionOrder={questionOrder}></QuestionList>
-            </EditPageTemplate>
-        </PageLayout>
+            </PageTemplate>
+        </EditSurveyPageLayout>
     </CheckUserLoggedIn>;
 }
 
