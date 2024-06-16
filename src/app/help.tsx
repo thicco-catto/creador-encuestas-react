@@ -4,6 +4,7 @@ import { OnAuthStateChanged } from "../repositories/auth";
 import { NavBar } from "../components/navigation/navbar";
 import { PageTemplate } from "../components/editPageTemplate";
 import { Calendar, Check2Circle, Collection, Icon1Circle, PencilSquare, UiChecksGrid } from "react-bootstrap-icons";
+// import Tutorial from "../assets/Tuturial.png";
 
 function Help() {
     const [user, setUser] = useState<User | null>(null);
@@ -30,6 +31,8 @@ function Help() {
                         <li><strong>Barra de navegación.</strong> En esta barra aparecen atajos a diversas páginas. Siempre contiene un enlace a esta ayuda, a la lista de encuestas y para cerrar la sesión. Si se está editando una encuesta también aparecerá el nombre de la encuesta, que lleva a la ventana de edición de la información de la encuesta, y atajos a las listas de preguntas y perfiles. Además, si se está editando una pregunta, o una versión de una pregunta, aparecerán atajos a la página de edición de la pregunta y a la lista de perfiles.</li>
                         <li><strong>Pestaña lateral de navegación.</strong> En esta pestaña aparecen las preguntas y los perfiles que existen actualmente en la aplicación. Clicar en cada elemento navega hasta la ventana de edición del respectivo elemento. Cuando se edita un perfil o una pregunta, estos aparecen resaltados con un borde más grueso y de color negro. Además, si se edita una versión, aparecerán resaltados los perfiles a los que afecta, de manera más sútil.</li>
                     </ol>
+
+                    <img src="Tutorial.png" alt="Captura de pantalla de la interfaz" width={"100%"} className="mb-2"></img>
 
                     En la pestaña lateral de navegación las preguntas aparecen con iconos asociados:
                     <ul>
