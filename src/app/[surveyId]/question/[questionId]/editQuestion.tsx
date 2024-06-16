@@ -30,7 +30,7 @@ function EditQuestion() {
     return <CheckUserLoggedIn>
         <EditSurveyPageLayout QuestionId={questionId}>
             <PageTemplate Title="Información Pregunta">
-                <QuestionForm Question={question}></QuestionForm>
+                <QuestionForm Question={question} QuestionID={question.ID}></QuestionForm>
             </PageTemplate>
         </EditSurveyPageLayout>
     </CheckUserLoggedIn>;

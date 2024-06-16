@@ -106,3 +106,7 @@ label {
 .login-buttons-container {
   max-width: 40%;
 }
+
+.help-subcontainer {
+  padding-left: 1em;
+}
