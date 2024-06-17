@@ -11,6 +11,7 @@ import { CheckUserLoggedIn } from "../../../../../components/checkUser";
 
 function EditDefaultDetails() {
     const params = useParams();
+    const surveyId = params.surveyId!;
     const questionId = params.questionId!;
 
     const [question, setQuestion] = useState<Question | null>(null);
@@ -25,8 +26,10 @@ function EditDefaultDetails() {
             setQuestion(question ?? null);
 
             setProfiles(profilesData);
+        } else {
+            window.location.href = `/${surveyId}/loading`;
         }
-    }, [questionId]);
+    }, [questionId, surveyId]);
 
     if(!question || !profiles) {
         return <></>;

@@ -10,6 +10,7 @@ import { CheckUserLoggedIn } from "../../../../components/checkUser";
 
 function EditQuestion() {
     const params = useParams();
+    const surveyId = params.surveyId!;
     const questionId = params.questionId!;
 
     const [question, setQuestion] = useState<Question | null>(null);
@@ -20,8 +21,10 @@ function EditQuestion() {
         if(questionsData) {
             const question = questionsData.find(x => x.ID === questionId);
             setQuestion(question ?? null);
+        } else {
+            window.location.href = `/${surveyId}/loading`;
         }
-    }, [questionId]);
+    }, [questionId, surveyId]);
 
     if(!question) {
         return <></>;

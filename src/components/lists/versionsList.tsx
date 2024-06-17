@@ -28,7 +28,7 @@ function VersionListElement(props: VersionListElementProps) {
         window.location.reload();
     };
 
-    return <li className="survey-list-element">
+    return <li className="list-element">
         <h2>{version.Title}</h2>
         <p>{version.Description}</p>
         <a href={baseVersionUrl}><Button variant="secondary" style={{marginRight: "10px"}}>Editar Información</Button></a>
@@ -73,7 +73,7 @@ export function VersionList(props: VersionListProps) {
     </a>
 
     <ul className="survey-list">
-        <li className="survey-list-element">
+        <li className="list-element">
             <h2>{"Por defecto"}</h2>
             <p>Esta versión de la pregunta se mostrará por defecto a todos los usuarios</p>
             <Button variant="secondary" disabled style={{marginRight: "10px"}}>Editar Información</Button>

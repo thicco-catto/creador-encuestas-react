@@ -5,8 +5,12 @@ import { GetVariable, StorageVariable } from "../../../utils/localStorage";
 import { PageTemplate } from "../../../components/editPageTemplate";
 import { EditSurveyPageLayout } from "../../../components/pageLayout";
 import { CheckUserLoggedIn } from "../../../components/checkUser";
+import { useParams } from "react-router-dom";
 
 function ProfileListPage() {
+    const params = useParams();
+    const surveyId = params.surveyId!;
+
     const [profiles, setProfiles] = useState<Profile[] | null>(null);
 
     useEffect(() => {
@@ -14,8 +18,10 @@ function ProfileListPage() {
 
         if(profilesData) {
             setProfiles(profilesData)
+        } else {
+            window.location.href = `/${surveyId}/loading`;
         }
-    }, []);
+    }, [surveyId]);
 
     if(!profiles) {
         return <></>;

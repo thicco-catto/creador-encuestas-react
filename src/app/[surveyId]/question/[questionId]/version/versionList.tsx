@@ -9,6 +9,7 @@ import { CheckUserLoggedIn } from "../../../../../components/checkUser";
 
 function VersionListPage() {
     const params = useParams();
+    const surveyId = params.surveyId!;
     const questionId = params.questionId!;
 
     const [versions, setVersions] = useState<QuestionVersion[] | null>(null);
@@ -18,8 +19,10 @@ function VersionListPage() {
 
         if(versionData) {
             setVersions(versionData[questionId] ?? []);
+        } else {
+            window.location.href = `/${surveyId}/loading`;
         }
-    }, [questionId]);
+    }, [questionId, surveyId]);
 
     if(!versions) {
         return <></>;

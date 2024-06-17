@@ -26,7 +26,7 @@ function ProfileListElement(props: ProfileListElementProps) {
         window.location.reload();
     };
 
-    return <li className="survey-list-element">
+    return <li className="list-element">
         <h2>{profile.Title}</h2>
         <p>{profile.Description}</p>
         <br></br>

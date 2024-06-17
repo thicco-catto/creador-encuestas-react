@@ -37,7 +37,7 @@ function QuestionAndVersionInfo(props: QuestionAndVersionInfoProps) {
     }
 
     return <>
-        <div className="survey-list-element mb-4">
+        <div className="list-element mb-4">
                 <h2>{question.InternalTitle}</h2>
                 <p><strong>Tipo:</strong> Pregunta de {GetQuestionTypeName(question.QuestionType)}</p>
 
@@ -46,7 +46,7 @@ function QuestionAndVersionInfo(props: QuestionAndVersionInfoProps) {
             </div>
 
             {version ?
-                <div className="survey-list-element mb-4">
+                <div className="list-element mb-4">
                     <h2>{version.Title}</h2>
                     <p><strong>Descripción:</strong> {version.Description}</p>
                     <p><strong>Perfiles:</strong> {version.Profiles.map(id => profiles.find(p => p.ID === id)?.Title).join()}</p>

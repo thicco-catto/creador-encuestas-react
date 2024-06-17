@@ -11,6 +11,7 @@ import { CheckUserLoggedIn } from "../../../../../../components/checkUser";
 
 function EditVersion() {
     const params = useParams();
+    const surveyId = params.surveyId!;
     const questionId = params.questionId!;
     const versionId = params.versionId!;
 
@@ -26,8 +27,10 @@ function EditVersion() {
             setVersion(versions.find(x => x.ID === versionId) ?? null);
 
             setProfiles(profilesData);
+        } else {
+            window.location.href = `/${surveyId}/loading`;
         }
-    }, [questionId, versionId]);
+    }, [questionId, versionId, surveyId]);
 
     if(!version || !profiles) {
         return <></>;

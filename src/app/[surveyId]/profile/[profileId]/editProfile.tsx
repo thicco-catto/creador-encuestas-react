@@ -9,6 +9,7 @@ import { CheckUserLoggedIn } from "../../../../components/checkUser";
 
 function EditProfile() {
     const params = useParams();
+    const surveyId = params.surveyId!;
     const profileId = params.profileId!;
 
     const [profile, setProfile] = useState<Profile | null>(null);
@@ -19,8 +20,10 @@ function EditProfile() {
         if (profilesData) {
             const foundProfile = profilesData.find(x => x.ID === profileId);
             setProfile(foundProfile ?? null);
+        } else {
+            window.location.href = `/${surveyId}/loading`;
         }
-    }, [profileId]);
+    }, [profileId, surveyId]);
 
     if (!profile) {
         return <></>;

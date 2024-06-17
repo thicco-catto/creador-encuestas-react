@@ -37,7 +37,7 @@ function SurveyListElement(props: SurveyListElementProps) {
         window.location.reload();
     };
 
-    return <li className="survey-list-element">
+    return <li className="list-element">
         <h2>{survey.Title}</h2>
         <p>{survey.PrivateDescription}</p>
 

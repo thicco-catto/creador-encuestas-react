@@ -12,6 +12,7 @@ import { CheckUserLoggedIn } from "../../../../../../components/checkUser";
 
 function EditVersionDetails() {
     const params = useParams();
+    const surveyId = params.surveyId!;
     const questionId = params.questionId!;
     const versionId = params.versionId!;
 
@@ -29,8 +30,10 @@ function EditVersionDetails() {
             const versions = versionsData[questionId] ?? [];
             const version = versions.find(x => x.ID === versionId);
             setVersion(version ?? null);
+        } else {
+            window.location.href = `/${surveyId}/loading`;
         }
-    }, [questionId, versionId]);
+    }, [questionId, versionId, surveyId]);
 
     if(!question || !version) {
         return <></>;

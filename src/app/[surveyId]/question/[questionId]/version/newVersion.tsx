@@ -12,6 +12,7 @@ import { CheckUserLoggedIn } from "../../../../../components/checkUser";
 
 function NewVersion() {
     const params = useParams();
+    const surveyId = params.surveyId!;
     const questionId = params.questionId!;
 
     const [question, setQuestion] = useState<Question | null>(null);
@@ -24,8 +25,10 @@ function NewVersion() {
         if(questionsData && profilesData) {
             setQuestion(questionsData.find(x => x.ID === questionId) ?? null);
             setProfiles(profilesData);
+        } else {
+            window.location.href = `/${surveyId}/loading`;
         }
-    }, [questionId]);
+    }, [questionId, surveyId]);
 
     if(!question || !profiles) {
         return <></>;

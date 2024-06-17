@@ -6,8 +6,12 @@ import { Question } from "../../models/Question";
 import { useEffect, useState } from "react";
 import { CheckUserLoggedIn } from "../../components/checkUser";
 import { EditSurveyPageLayout } from "../../components/pageLayout";
+import { useParams } from "react-router-dom";
 
 function EditSurvey() {
+    const params = useParams();
+    const surveyId = params.surveyId!;
+
     const [survey, setSurvey] = useState<Survey | null>(null);
     const [firstQuestion, setFirstQuestion] = useState<Question | null>(null);
 
@@ -18,8 +22,10 @@ function EditSurvey() {
         if(surveyData && questionsData) {
             setSurvey(surveyData);
             setFirstQuestion(questionsData[0]);
+        } else {
+            window.location.href = `/${surveyId}/loading`;
         }
-    }, []);
+    }, [surveyId]);
 
     if(!survey || !firstQuestion) {
         return <></>;

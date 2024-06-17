@@ -64,7 +64,7 @@ ul.survey-list {
   list-style-type: none;
 }
 
-.survey-list-element {
+.list-element {
   background-color: gainsboro;
   padding: 10px;
   margin-bottom: 10px;

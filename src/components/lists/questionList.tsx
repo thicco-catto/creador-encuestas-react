@@ -26,7 +26,7 @@ function QuestionListElement(props: QuestionListElementProps) {
         window.location.reload();
     };
 
-    return <li className="survey-list-element">
+    return <li className="list-element">
         <h2>{question.InternalTitle}</h2>
         <p><strong>Tipo:</strong> Pregunta de {GetQuestionTypeName(question.QuestionType)}</p>
         <br></br>

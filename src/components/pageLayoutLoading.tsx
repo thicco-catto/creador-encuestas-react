@@ -4,12 +4,21 @@ import { Survey } from "../models/Survey";
 import { QuestionsSidebarLoading } from "./navigation/questionSidebarLoading";
 
 interface PageLayoutProps {
-    Survey: Survey,
+    Survey?: Survey,
     Disabled?: boolean
 }
 
 export function PageLayoutLoading(props: React.PropsWithChildren<PageLayoutProps>) {
-    const survey = props.Survey;
+    let survey = props.Survey;
+    if(!survey) {
+        survey = {
+            ID: "",
+            PrivateDescription: "",
+            PublicDescription: "",
+            QuestionOrder: [],
+            Title: "..."
+        }
+    }
 
     return <>
         <NavBarWithSurvey Disabled={props.Disabled} Survey={survey}></NavBarWithSurvey>
