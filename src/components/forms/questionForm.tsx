@@ -51,7 +51,7 @@ export function QuestionForm(props: QuestionDetailsFormProps) {
             InternalTitle: title,
             QuestionType: parseInt(questionType),
             DefaultDetails: question.DefaultDetails,
-            Help: ""
+            Help: help
         };
         const newNumAnswers = numAnswers;
 
