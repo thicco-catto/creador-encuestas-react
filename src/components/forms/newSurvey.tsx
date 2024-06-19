@@ -44,7 +44,8 @@ export function NewSurveyForm() {
                 ],
                 First: "",
                 Last: ""
-            }
+            },
+            Help: ""
         };
 
         const addedQuestion = await AddQuestion(addedSurvey.ID, sampleQuestion);
