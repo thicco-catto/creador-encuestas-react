@@ -178,7 +178,8 @@ export function QuestionEditorWithAnswers(props: QuestionEditorWithAnswersProps)
                     Answers: newDefaultAnswers,
                     First: question.DefaultDetails.First,
                     Last: question.DefaultDetails.Last
-                }
+                },
+                Help: question.Help
             };
             await UpdateQuestion(surveyId, question.ID!, newQuestion);
 
@@ -202,7 +203,8 @@ export function QuestionEditorWithAnswers(props: QuestionEditorWithAnswersProps)
                 HasVersions: true,
                 InternalTitle: question.InternalTitle,
                 QuestionType: question.QuestionType,
-                DefaultDetails: newDetails
+                DefaultDetails: newDetails,
+                Help: question.Help
             };
             await UpdateQuestion(surveyId, question.ID!, newQuestion);
 
@@ -249,7 +251,8 @@ export function QuestionEditorWithAnswers(props: QuestionEditorWithAnswersProps)
                     Answers: newDefaultAnswers,
                     First: question.DefaultDetails.First,
                     Last: question.DefaultDetails.Last
-                }
+                },
+                Help: question.Help
             };
             await UpdateQuestion(surveyId, question.ID!, newQuestion);
 
@@ -272,7 +275,8 @@ export function QuestionEditorWithAnswers(props: QuestionEditorWithAnswersProps)
                 HasVersions: true,
                 InternalTitle: question.InternalTitle,
                 QuestionType: question.QuestionType,
-                DefaultDetails: newDetails
+                DefaultDetails: newDetails,
+                Help: question.Help
             };
             await UpdateQuestion(surveyId, question.ID!, newQuestion);
 
@@ -331,7 +335,8 @@ export function QuestionEditorWithAnswers(props: QuestionEditorWithAnswersProps)
                     Answers: newDefaultAnswers,
                     First: question.DefaultDetails.First,
                     Last: question.DefaultDetails.Last
-                }
+                },
+                Help: question.Help
             };
             await UpdateQuestion(surveyId, question.ID!, newQuestion);
 
@@ -355,7 +360,8 @@ export function QuestionEditorWithAnswers(props: QuestionEditorWithAnswersProps)
                 HasVersions: true,
                 InternalTitle: question.InternalTitle,
                 QuestionType: question.QuestionType,
-                DefaultDetails: newDetails
+                DefaultDetails: newDetails,
+                Help: question.Help
             };
             await UpdateQuestion(surveyId, question.ID!, newQuestion);
 

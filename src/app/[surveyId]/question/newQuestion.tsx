@@ -19,7 +19,8 @@ function NewQuestion() {
             ],
             First: "",
             Last: ""
-        }
+        },
+        Help: ""
     } 
 
     return <CheckUserLoggedIn>

@@ -27,6 +27,7 @@ export function QuestionForm(props: QuestionDetailsFormProps) {
     const [title, setTitle] = useState(question.InternalTitle);
     const [questionType, setQuestionType] = useState(question.QuestionType.toString());
     const [numAnswers, setNumAnswers] = useState(question.DefaultDetails.Answers.length);
+    const [help, setHelp] = useState(question.Help);
 
     const [buttonClicked, setButtonClicked] = useState("None");
 
@@ -49,7 +50,8 @@ export function QuestionForm(props: QuestionDetailsFormProps) {
             HasVersions: question.HasVersions,
             InternalTitle: title,
             QuestionType: parseInt(questionType),
-            DefaultDetails: question.DefaultDetails
+            DefaultDetails: question.DefaultDetails,
+            Help: ""
         };
         const newNumAnswers = numAnswers;
 
@@ -147,6 +149,20 @@ export function QuestionForm(props: QuestionDetailsFormProps) {
                 type="number"
                 defaultValue={numAnswers}
                 onChange={e => setNumAnswers(parseInt(e.target.value))}
+            />
+        </Form.Group>
+
+        <Form.Group className="mb-3">
+        <Form.Label htmlFor="help">Ayuda:</Form.Label>
+            <Form.Control
+                id="help"
+                name="help"
+                as="textarea"
+                rows={4}
+                style={{resize: "none"}}
+                defaultValue={help}
+                placeholder="Este mensaje se mostrará al usuario si necesita ayuda para entender la pregunta."
+                onChange={(e) => setHelp(e.target.value)}
             />
         </Form.Group>
 
